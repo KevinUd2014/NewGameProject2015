@@ -12,7 +12,7 @@ namespace NewKillingStory
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        
         GameController gameController;
         MenuController menuController;
 
@@ -113,7 +113,7 @@ namespace NewKillingStory
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
+            spriteBatch.Begin();
             switch (ScreenState)//got this from a classmate! //really smart and inovative idéa
             {
                 case Gamestate.Menu:
@@ -123,6 +123,7 @@ namespace NewKillingStory
                 case Gamestate.Play:
                     break;
             }
+            spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

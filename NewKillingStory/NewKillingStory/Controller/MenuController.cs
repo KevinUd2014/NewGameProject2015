@@ -19,6 +19,8 @@ namespace NewKillingStory.Controller
         MouseState oldMouseState;
         MouseState newMouseState;
 
+        Vector2 mousePosition;
+
         public MenuController()
         {
 
@@ -28,6 +30,7 @@ namespace NewKillingStory.Controller
         {
             camera = new Camera(viewport);
 
+            //sprites
             startMenuBackground = Background;
             playButton = Play;
 
@@ -37,11 +40,12 @@ namespace NewKillingStory.Controller
         public void Update(float elapsedSeconds)
         {
             oldMouseState = newMouseState;
-
             newMouseState = Mouse.GetState();
-            var mousePosition = new Vector2(newMouseState.X, newMouseState.Y);
 
-            menuView.Update(mousePosition, playButton);
+            //var mousePosition = new Vector2(newMouseState.X, newMouseState.Y);
+            mousePosition = new Vector2(newMouseState.X, newMouseState.Y);
+
+            menuView.Update(mousePosition, playButton, elapsedSeconds);
 
             if (oldMouseState.LeftButton == ButtonState.Released && newMouseState.LeftButton == ButtonState.Pressed)
             {

@@ -14,7 +14,7 @@ namespace NewKillingStory.Controller
 
         }
 
-        public void LoadContent(SpriteBatch sBatch, ContentManager Content, Viewport port)
+        public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport)
         {
 
         }

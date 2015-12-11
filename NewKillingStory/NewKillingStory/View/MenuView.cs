@@ -9,12 +9,16 @@ namespace NewKillingStory.View
 {
     class MenuView
     {
+        int alphaValue = 1;
+        int fadeIncrement = 3;
+        double fadeDelay = 0.010;
+
         Camera camera;
         Vector2 playButtonPos;
         Texture2D playButton;
-        float buttonScale = 1f;
-        float minButtonscale = 1f;
-        float maxButtonscale = 1.2f;
+        float sclaeButton = 1f;
+        float minimumButton = 1f;
+        float maxButton = 1.2f;
 
 
 
@@ -27,8 +31,21 @@ namespace NewKillingStory.View
 
         }
 
-        public void Update(Vector2 mousePosition, Texture2D playButton)
+        public void Update(Vector2 mousePosition, Texture2D playButton, float elapsedSeconds)
         {
+            fadeDelay -= elapsedSeconds;
+
+            if (fadeDelay <= 0)
+            {
+                fadeDelay = 0.010;
+                alphaValue += fadeIncrement;
+
+                if (alphaValue >= 255 || alphaValue <= 2)
+                {
+                    fadeIncrement *= -1;
+                }
+            }
+
             this.playButton = playButton;
 
             Vector2 mouseModelPosition = camera.convertToLogicalCoords(mousePosition);
@@ -54,16 +71,24 @@ namespace NewKillingStory.View
             //}
         }
 
-        public void Draw(SpriteBatch sBatch, float elapsedSeconds, Texture2D menuBackground)
+        public void Draw(SpriteBatch spriteBatch, float elapsedSeconds, Texture2D menuBackground)
         {
 
 
-            float scale = camera.getScaleForView((float)menuBackground.Width);
+            float scale = camera.getScaleForView(menuBackground.Width);
 
-            sBatch.Begin();
-            sBatch.Draw(menuBackground, Vector2.Zero, menuBackground.Bounds, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0);
-            //sBatch.Draw(playButton, camera.convertToVisualCoords(playButtonPos, playButton.Width, playButton.Height), playButton.Bounds, Color.White, 0f, Vector2.Zero, buttonScale, SpriteEffects.None, 0);
-            sBatch.End();
+            //spriteBatch.Draw(menuBackground, Vector2.Zero, menuBackground.Bounds, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0);
+            //spriteBatch.Draw(menuBackground,Vector2.Zero, menuBackground.Bounds, new Color(255, 255, 255, (byte)MathHelper.Clamp(mAlphaValue, 0, 255)));
+            //spriteBatch.Draw(menuBackground,Vector2.Zero, camera.getScaleForView(menuBackground.Width), new Color((byte)MathHelper.Clamp(mAlphaValue, 22, 255), 255, 255, (byte)MathHelper.Clamp(mAlphaValue, 22, 255)));
+            //spriteBatch.Draw(playButton, camera.convertToVisualCoords(playButtonPos, playButton.Width, playButton.Height), playButton.Bounds, Color.White, 0f, Vector2.Zero, buttonScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(menuBackground,
+                    Vector2.Zero,
+                    menuBackground.Bounds, new Color((byte)MathHelper.Clamp(alphaValue, 22, 255), 255, 255, (byte)MathHelper.Clamp(alphaValue, 22, 255)),
+                    0f,
+                    Vector2.Zero,
+                    scale,
+                    SpriteEffects.None,
+                    0f);
         }
 
     }
