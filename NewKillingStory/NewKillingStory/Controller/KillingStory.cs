@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NewKillingStory.Controller;
+using NewKillingStory.Model;
 
 namespace NewKillingStory
 {
@@ -12,7 +13,10 @@ namespace NewKillingStory
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+
+        Texture2D character;
+        Player player;
+
         GameController gameController;
         MenuController menuController;
 
@@ -62,6 +66,13 @@ namespace NewKillingStory
             menuController = new MenuController();
             gameController = new GameController();
 
+            player = new Player(new Vector2(100, 100));
+
+            //character = Content.Load<Texture2D>("playerSheet");
+            //Loads our player's content
+            character = Content.Load<Texture2D>("imp");
+            player.LoadContent(character);
+
             //Load all the textures here and sound as well!
             Texture2D startMenuBackground = Content.Load<Texture2D>("KillerStory");
             Texture2D playButton = Content.Load<Texture2D>("playButton");
@@ -96,6 +107,7 @@ namespace NewKillingStory
                 case Gamestate.Menu:
                     IsMouseVisible = true;
                     menuController.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+                    player.Update(gameTime);
                     break;
 
                 case Gamestate.Play:
@@ -118,6 +130,7 @@ namespace NewKillingStory
             {
                 case Gamestate.Menu:
                     menuController.Draw(spriteBatch, (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    player.Draw(spriteBatch, character);
                     break;
 
                 case Gamestate.Play:
