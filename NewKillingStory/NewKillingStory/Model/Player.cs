@@ -36,7 +36,7 @@ namespace NewKillingStory.Model
             //AddAnimation(9, 310, 0, "AttackLeft", 70, 70, new Vector2(-30, -5));
             //AddAnimation(9, 380, 0, "AttackRight", 70, 70, new Vector2(+15, -5));
             //Plays our start animation
-            //PlayAnimation("IdleDown");
+            //PlayAnimation("IdleDown");//test kommentar för en commit!
         }
         /// Loads content specific to the player class
         public void LoadContent(Texture2D character)
