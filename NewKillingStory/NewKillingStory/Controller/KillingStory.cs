@@ -65,22 +65,20 @@ namespace NewKillingStory
             //create all the necessary classes!
             menuController = new MenuController();
             gameController = new GameController();
-
-            player = new Player(new Vector2(100, 100));
-
-            //character = Content.Load<Texture2D>("playerSheet");
-            //Loads our player's content
-            character = Content.Load<Texture2D>("imp");
-            player.LoadContent(character);
+            
+            player = new Player(new Vector2(340, 220));// start positionen för player!
 
             //Load all the textures here and sound as well!
             Texture2D startMenuBackground = Content.Load<Texture2D>("KillerStory");
             Texture2D playButton = Content.Load<Texture2D>("playButton");
+            character = Content.Load<Texture2D>("imp");
+            //character = Content.Load<Texture2D>("Fox");
 
             //load all the classes and give them all the necessary parameters!
+
+            player.LoadContent(character);
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton);
             gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport);
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>

@@ -20,29 +20,29 @@ namespace NewKillingStory.Model
         /// The constructor of the Player class
         public Player(Vector2 position) : base(position)//this position is handled through the base class
         {
-            FramesPerSecond = 5;
+            FramesPerSecond = 4;
 
             //Adds all the players animations
-            //AddAnimation(12, 0, 0, "Down", 50, 50, new Vector2(0, 0));
-            //AddAnimation(1, 0, 0, "IdleDown", 50, 50, new Vector2(0, 0));
-            //AddAnimation(12, 50, 0, "Up", 50, 50, new Vector2(0, 0));
-            //AddAnimation(1, 50, 0, "IdleUp", 50, 50, new Vector2(0, 0));
-            //AddAnimation(8, 100, 0, "Left", 50, 50, new Vector2(0, 0));
-            //AddAnimation(1, 100, 0, "IdleLeft", 50, 50, new Vector2(0, 0));
-            //AddAnimation(8, 100, 8, "Right", 50, 50, new Vector2(0, 0));
-            //AddAnimation(1, 100, 8, "IdleRight", 50, 50, new Vector2(0, 0));
+            AddAnimation(2, 0, 0, "Down", 66, 66);
+            AddAnimation(2, 193, 0, "Up", 66, 63);
+            AddAnimation(2, 65, 0, "Left", 66, 64);
+            AddAnimation(2, 129, 0, "Right", 66, 66);
+            //AddAnimation(3, 0, 0, "Down", 40, 45);
+            //AddAnimation(3, 132, 0, "Up", 40, 45);
+            //AddAnimation(3, 49, 0, "Left", 40, 45);
+            //AddAnimation(3, 95, 0, "Right", 40, 45);
             //AddAnimation(9, 150, 0, "AttackDown", 70, 80, new Vector2(0, 0));
             //AddAnimation(9, 230, 0, "AttackUp", 70, 80, new Vector2(-13, -27));
             //AddAnimation(9, 310, 0, "AttackLeft", 70, 70, new Vector2(-30, -5));
             //AddAnimation(9, 380, 0, "AttackRight", 70, 70, new Vector2(+15, -5));
             //Plays our start animation
-            //PlayAnimation("IdleDown");//test kommentar för en commit!
+            PlayAnimation("Down");
         }
         /// Loads content specific to the player class
         public void LoadContent(Texture2D character)
         {
             this.character = character;//laddar in charactern!
-            AddAnimation(3);
+            //AddAnimation(3);
         }
 
         public override void Update(GameTime gameTime)
@@ -70,36 +70,36 @@ namespace NewKillingStory.Model
             {
                 //Move char Up
                 direction += new Vector2(0, -1.5f);
-                //PlayAnimation("Up");
-                //currentDir = myDirection.up;
+                PlayAnimation("Up");
+                currentDirection = myDirection.up;
 
             }
             if (keyState.IsKeyDown(Keys.A))
             {
                 //Move char Left
                 direction += new Vector2(-1.5f, 0);
-                //PlayAnimation("Left");
-                //currentDir = myDirection.left;
+                PlayAnimation("Left");
+                currentDirection = myDirection.left;
 
             }
             if (keyState.IsKeyDown(Keys.S))
             {
                 //Move char Down
                 direction += new Vector2(0, 1.5f);
-                //PlayAnimation("Down");
-                //currentDir = myDirection.down;
+                PlayAnimation("Down");
+                currentDirection = myDirection.down;
 
             }
             if (keyState.IsKeyDown(Keys.D))
             {
                 //Move char Right
                 direction += new Vector2(1.5f, 0);
-                //PlayAnimation("Right");
-                //currentDir = myDirection.right;
+                PlayAnimation("Right");
+                currentDirection = myDirection.right;
 
             }
 
-            //currentDir = myDirection.none;
+            currentDirection = myDirection.none;
 
         }
 

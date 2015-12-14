@@ -23,6 +23,8 @@ namespace NewKillingStory.Model
         private int frameIndex;
         private Rectangle[] rectangle;
 
+        public enum myDirection { none, left, right, up, down }
+        protected myDirection currentDirection = myDirection.none;
 
         ///// Time that has passed since last frame change 
         private double timeElapsed;
@@ -30,7 +32,7 @@ namespace NewKillingStory.Model
         private double timeToUpdate;
         //private Rectangle[] rectangle;
         ///// Keeps track of the current animation
-        //protected string currentAnimation;
+        private string currentAnimation;
         ///// The velocity of the SpriteObject
         protected Vector2 direction = Vector2.Zero;
 
@@ -43,13 +45,13 @@ namespace NewKillingStory.Model
             }
         }
 
-        ///// Dictionary that contains all animations
-        //private Dictionary<string, Rectangle[]> sAnimations = new Dictionary<string, Rectangle[]>();
+        // Dictionary that contains all animations
+        private Dictionary<string, Rectangle[]> animations = new Dictionary<string, Rectangle[]>();
 
-        ///// Dictionary that contains all animation offsets
+        // Dictionary that contains all animation offsets
         //private Dictionary<string, Vector2> sOffsets = new Dictionary<string, Vector2>();
 
-        ///// Constructor of the AnimatedSprite
+        // Constructor of the AnimatedSprite
         public AnimatedSprites(Vector2 position)
         {
             this.postion = position;
@@ -58,18 +60,19 @@ namespace NewKillingStory.Model
         ///// <summary>
         ///// Adds an animation to the AnimatedSprite
         ///// </summary>
-        public void AddAnimation(int frames)//, int yPos, int xStartFrame, string name, int width, int height, Vector2 offset)
+        public void AddAnimation(int frames, int yPosition, int xStartFrame, string name, int width, int height)//, Vector2 offset//om jag villl ha en attack sprite!   , int yPos, int xStartFrame, string name, int width, int height, Vector2 offset)
         {
-            int width = character.Width / frames;
-            rectangle = new Rectangle[frames];
+            //int width = character.Width / frames;
+            
+            Rectangle[] newRectangle = new Rectangle[frames];// needs a dictionary
 
             for (int i = 0; i < frames; i++)////Fills up the array of rectangles
             {
-                rectangle[i] = new Rectangle(i * width, 0, width, character.Height);
-                //Rectangles[i] = new Rectangle((i + xStartFrame) * width, yPos, width, height);
-            }
-            //sAnimations.Add(name, Rectangles);
-            //sOffsets.Add(name, offset);
+                //rectangle[i] = new Rectangle(i * width, 0, width, character.Height);
+                newRectangle[i] = new Rectangle((i + xStartFrame) * width, yPosition, width, height);
+            }                                   // sätter start positionen på frame
+            animations.Add(name, newRectangle);// lägger till allt i rektangel some n animation!
+            //offset.Add(name, offset);//denna kan behövas om jag ska ha en attack sprite senare
         }
         ///// Determines when we have to change frames
         public virtual void Update(GameTime gameTime)
@@ -77,14 +80,13 @@ namespace NewKillingStory.Model
             //Adds time that has elapsed since our last draw
             timeElapsed += gameTime.ElapsedGameTime.TotalSeconds;
 
-            //We need to change our image if our timeElapsed is greater than our timeToUpdate(calculated by our framerate)
-            if (timeElapsed > timeToUpdate)
+            if (timeElapsed > timeToUpdate)// if our timelapsed is greater than our timeToUpdate(calculated by our framerate) we need to change the image
             {
                 //Resets the timer in a way, so that we keep our desired FPS
                 timeElapsed -= timeToUpdate;
 
                 //Adds one to our frameIndex
-                if (frameIndex < rectangle.Length - 1)//sAnimations[currentAnimation].Length - 1)
+                if (frameIndex < animations[currentAnimation].Length - 1)//sAnimations[currentAnimation].Length - 1)
                 {
                     frameIndex++;
                 }
@@ -99,18 +101,18 @@ namespace NewKillingStory.Model
         ///// Draws the sprite on the screen
         public void Draw(SpriteBatch spriteBatch, Texture2D character)
         {
-            spriteBatch.Draw(character, postion, rectangle[frameIndex], Color.White);
+            spriteBatch.Draw(character, postion, animations[currentAnimation][frameIndex], Color.White);
         }
-        ///// Plays an animation
-        //public void PlayAnimation(string name)
-        //{
-        //    //Makes sure we won't start a new annimation unless it differs from our current animation
-        //    if (currentAnimation != name && currentDir == myDirection.none)
-        //    {
-        //        currentAnimation = name;
-        //        frameIndex = 0;
-        //    }
-        //}
+        // Plays an animation
+        public void PlayAnimation(string name)
+        {
+            //Makes sure we won't start a new annimation unless it differs from our current animation
+            if (currentAnimation != name && currentDirection == myDirection.none)
+            {
+                currentAnimation = name;
+                frameIndex = 0;
+            }
+        }
 
         ///// Method that is called every time an animation finishes
         //public abstract void AnimationDone(string animation);
