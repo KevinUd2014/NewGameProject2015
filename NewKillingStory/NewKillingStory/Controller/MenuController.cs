@@ -20,6 +20,14 @@ namespace NewKillingStory.Controller
         MouseState newMouseState;
 
         Vector2 mousePosition;
+        Vector2 position;
+        Rectangle rectangle;
+
+        Color color = new Color(255, 255, 255, 255);
+
+        public Vector2 size;
+        bool down;
+        public bool isClicked;
 
         public MenuController()
         {
@@ -36,16 +44,42 @@ namespace NewKillingStory.Controller
 
             menuView = new MenuView(camera);
         }
+        public void setPosition(Vector2 newPosition)
+        {
+            position = newPosition;
+        }
 
-        public void Update(float elapsedSeconds)
+        public void Update(float elapsedSeconds, MouseState mousePosition)
         {
             oldMouseState = newMouseState;
             newMouseState = Mouse.GetState();
 
-            //var mousePosition = new Vector2(newMouseState.X, newMouseState.Y);
-            mousePosition = new Vector2(newMouseState.X, newMouseState.Y);
+            rectangle = new Rectangle((int)position.X, (int)position.Y, 80, 50);//, (int)size.X, (int)size.Y
+            Rectangle mouseRectangle = new Rectangle(mousePosition.X, mousePosition.Y, 1, 1);//en rektangel på musen!
 
-            menuView.Update(mousePosition, playButton, elapsedSeconds);
+            if (mouseRectangle.Intersects(rectangle))
+            {
+                if (color.A == 255)
+                    down = false;
+                if (color.A == 0)
+                    down = true;
+                if (down)
+                    color.A += 3;
+                else color.A -= 3;
+                if (mousePosition.LeftButton == ButtonState.Pressed)
+                    isClicked = true;
+            }
+            else if (color.A < 255)
+            {
+                color.A += 3;
+                isClicked = false;
+            }
+
+
+            //var mousePosition = new Vector2(newMouseState.X, newMouseState.Y);
+            //mousePosition = new Vector2(newMouseState.X, newMouseState.Y);
+
+            menuView.Update(playButton, elapsedSeconds);
 
             if (oldMouseState.LeftButton == ButtonState.Released && newMouseState.LeftButton == ButtonState.Pressed)
             {
@@ -55,7 +89,8 @@ namespace NewKillingStory.Controller
 
         public void Draw(SpriteBatch spriteBatch, float elapsedSeconds)
         {
-            menuView.Draw(spriteBatch, elapsedSeconds, startMenuBackground);
+            menuView.Draw(spriteBatch, elapsedSeconds, startMenuBackground, playButton, rectangle, color);
+            //spriteBatch.Draw(playButton, rectangle, color);
         }
     }
 }

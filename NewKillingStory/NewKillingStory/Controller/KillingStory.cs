@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NewKillingStory.Controller;
 using NewKillingStory.Model;
+using NewKillingStory.View;
 
 namespace NewKillingStory
 {
@@ -20,11 +21,14 @@ namespace NewKillingStory
         GameController gameController;
         MenuController menuController;
 
+        //MenuView menuView;
+
         /// http://gamedev.stackexchange.com/questions/108518/monogame-screen-transition-with-fading
         enum Gamestate//vet inte om denna!Lånade från filip!
         {
             Menu,//we have a menu
             Play,//and a play
+            Options,
         }
 
 
@@ -74,11 +78,15 @@ namespace NewKillingStory
             character = Content.Load<Texture2D>("imp");
             //character = Content.Load<Texture2D>("Fox");
 
+            //menuView = new MenuView();
+
             //load all the classes and give them all the necessary parameters!
 
             player.LoadContent(character);
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton);
             gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport);
+
+            menuController.setPosition(new Vector2(400, 400));// sätter positionen för knappen!
         }
 
         /// <summary>
@@ -100,15 +108,22 @@ namespace NewKillingStory
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            MouseState mouse = Mouse.GetState();
             switch (ScreenState)//creats a Switch with all the diffrent screens!
             {
                 case Gamestate.Menu:
                     IsMouseVisible = true;
-                    menuController.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+                    menuController.Update((float)gameTime.ElapsedGameTime.TotalSeconds, mouse);
                     player.Update(gameTime);
+                    if (menuController.isClicked == true)
+                    {
+                        ScreenState = Gamestate.Play;
+                        IsMouseVisible = true;
+                    }
                     break;
 
                 case Gamestate.Play:
+                    player.Update(gameTime);
                     break;
             }
             // TODO: Add your update logic here
@@ -123,6 +138,7 @@ namespace NewKillingStory
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+
             spriteBatch.Begin();
             switch (ScreenState)//got this from a classmate! //really smart and inovative idéa
             {
@@ -132,6 +148,7 @@ namespace NewKillingStory
                     break;
 
                 case Gamestate.Play:
+                    player.Draw(spriteBatch, character);
                     break;
             }
             spriteBatch.End();

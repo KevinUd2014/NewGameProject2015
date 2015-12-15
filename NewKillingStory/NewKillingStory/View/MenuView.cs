@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,10 @@ namespace NewKillingStory.View
         int fadeIncrement = 3;
         double fadeDelay = 0.010;
 
+        Texture2D playText;
+
         Camera camera;
-        Vector2 playButtonPos;
+        //Vector2 playButtonPos;
         Texture2D playButton;
         float sclaeButton = 1f;
         float minimumButton = 1f;
@@ -26,13 +29,15 @@ namespace NewKillingStory.View
         {
             this.camera = camera;
 
+            //playButtonPos = new Vector2(0.4f, 0.4f);
 
-            playButtonPos = new Vector2(0.4f, 0.4f);
+            //size = new Vector2(graphics.GraphicsDevice.Viewport.Width / 20, graphics.GraphicsDevice.Viewport.Height / 20);
 
         }
 
-        public void Update(Vector2 mousePosition, Texture2D playButton, float elapsedSeconds)
+        public void Update(Texture2D playButton, float elapsedSeconds)
         {
+            //fade effekt på meny namnet!
             fadeDelay -= elapsedSeconds;
 
             if (fadeDelay <= 0)//denna if sats kommer att fixa fade på titel texten!
@@ -48,8 +53,7 @@ namespace NewKillingStory.View
 
             this.playButton = playButton;
 
-            Vector2 mouseModelPosition = camera.convertToLogicalCoords(mousePosition);
-            Console.WriteLine(mouseModelPosition.X);
+            //Vector2 mouseModelPosition = camera.convertToLogicalCoords(mousePosition);
 
             //TODO: FIX PLAYBUTTON FOR FULLSCREEN
 
@@ -71,7 +75,7 @@ namespace NewKillingStory.View
             //}
         }
 
-        public void Draw(SpriteBatch spriteBatch, float elapsedSeconds, Texture2D menuBackground)
+        public void Draw(SpriteBatch spriteBatch, float elapsedSeconds, Texture2D menuBackground, Texture2D Playbutton, Rectangle rectangle, Color color)
         {
 
 
@@ -89,6 +93,8 @@ namespace NewKillingStory.View
                     scale,
                     SpriteEffects.None,
                     0f);
+            spriteBatch.Draw(playButton, rectangle, color);
+            //spriteBatch.Draw(playButton, rectangle, color);
         }
 
     }
