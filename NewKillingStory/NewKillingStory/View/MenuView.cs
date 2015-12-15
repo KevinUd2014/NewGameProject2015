@@ -18,12 +18,6 @@ namespace NewKillingStory.View
 
         Camera camera;
         //Vector2 playButtonPos;
-        Texture2D playButton;
-        float sclaeButton = 1f;
-        float minimumButton = 1f;
-        float maxButton = 1.2f;
-
-
 
         public MenuView(Camera camera)
         {
@@ -35,7 +29,7 @@ namespace NewKillingStory.View
 
         }
 
-        public void Update(Texture2D playButton, float elapsedSeconds)
+        public void Update(float elapsedSeconds)
         {
             //fade effekt på meny namnet!
             fadeDelay -= elapsedSeconds;
@@ -51,28 +45,10 @@ namespace NewKillingStory.View
                 }
             }
 
-            this.playButton = playButton;
+            //this.playButton = playButton;
 
             //Vector2 mouseModelPosition = camera.convertToLogicalCoords(mousePosition);
-
-            //TODO: FIX PLAYBUTTON FOR FULLSCREEN
-
-            //if (mouseModelPosition.X >= playButtonPos.X - playButton.Width && mouseModelPosition.X < playButtonPos.X + playButton.Width
-            //&& mouseModelPosition.Y >= playButtonPos.Y - playButton.Height && mouseModelPosition.Y < playButtonPos.Y + playButton.Height)
-            //{
-            //    if (buttonScale < maxButtonscale)
-            //    {
-            //        buttonScale += 0.01f;
-            //    }
-            //}
-
-            //else
-            //{
-            //    if (buttonScale > minButtonscale)
-            //    {
-            //        buttonScale -= 0.01f;
-            //    }
-            //}
+           
         }
 
         public void Draw(SpriteBatch spriteBatch, float elapsedSeconds, Texture2D menuBackground, Texture2D Playbutton, Rectangle rectangle, Color color)
@@ -93,7 +69,7 @@ namespace NewKillingStory.View
                     scale,
                     SpriteEffects.None,
                     0f);
-            spriteBatch.Draw(playButton, rectangle, color);
+            spriteBatch.Draw(Playbutton, rectangle, color);
             //spriteBatch.Draw(playButton, rectangle, color);
         }
 
