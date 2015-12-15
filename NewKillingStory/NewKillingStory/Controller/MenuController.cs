@@ -51,7 +51,7 @@ namespace NewKillingStory.Controller
             //oldMouseState = newMouseState;
             //newMouseState = Mouse.GetState();
 
-            rectangle = new Rectangle((int)position.X, (int)position.Y, 80, 50);//, (int)size.X, (int)size.Y
+            rectangle = new Rectangle((int)position.X, (int)position.Y, 80, 50);//, (int)size.X, (int)size.Y //storleken på playknappen avgörs här!
             Rectangle mouseRectangle = new Rectangle(mousePosition.X, mousePosition.Y, 1, 1);//en rektangel på musen!
 
             if (mouseRectangle.Intersects(rectangle))

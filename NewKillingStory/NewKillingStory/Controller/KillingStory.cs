@@ -20,6 +20,8 @@ namespace NewKillingStory
 
         GameController gameController;
         MenuController menuController;
+        Camera camera;
+        //Map map;
 
         //MenuView menuView;
 
@@ -69,7 +71,8 @@ namespace NewKillingStory
             //create all the necessary classes!
             menuController = new MenuController();
             gameController = new GameController();
-            
+            camera = new Camera(GraphicsDevice.Viewport);
+
             player = new Player(new Vector2(340, 220));// start positionen för player!
 
             //Load all the textures here and sound as well!
@@ -81,7 +84,6 @@ namespace NewKillingStory
             //menuView = new MenuView();
 
             //load all the classes and give them all the necessary parameters!
-
             player.LoadContent(character);
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton);
             gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport);
@@ -148,7 +150,9 @@ namespace NewKillingStory
                     break;
 
                 case Gamestate.Play:
+                    gameController.Draw(spriteBatch);//, camera);
                     player.Draw(spriteBatch, character);
+
                     break;
             }
             spriteBatch.End();
