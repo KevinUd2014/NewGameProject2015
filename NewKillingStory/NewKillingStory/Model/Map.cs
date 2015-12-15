@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NewKillingStory.Model;
 using NewKillingStory.View;
 using System;
 using System.Collections.Generic;
