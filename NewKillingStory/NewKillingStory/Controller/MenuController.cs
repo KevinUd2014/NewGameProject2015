@@ -78,7 +78,8 @@ namespace NewKillingStory.Controller
             //mousePosition = new Vector2(newMouseState.X, newMouseState.Y);
 
             menuView.Update(elapsedSeconds);
-
+            //oldMouseState = newMouseState;
+            //newMouseState = Mouse.GetState();
             //if (oldMouseState.LeftButton == ButtonState.Released && newMouseState.LeftButton == ButtonState.Pressed)
             //{
 

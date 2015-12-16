@@ -97,7 +97,6 @@ namespace NewKillingStory.Model
                 }
             }
         }
-
         ///// Draws the sprite on the screen
         public void Draw(SpriteBatch spriteBatch, Texture2D character)
         {
@@ -106,15 +105,11 @@ namespace NewKillingStory.Model
         // Plays an animation
         public void PlayAnimation(string name)
         {
-            //Makes sure we won't start a new annimation unless it differs from our current animation
-            if (currentAnimation != name && currentDirection == myDirection.none)
+            if (currentAnimation != name && currentDirection == myDirection.none) //Makes sure we won't start a new annimation unless it differs from our current animation
             {
                 currentAnimation = name;
                 frameIndex = 0;
             }
         }
-
-        ///// Method that is called every time an animation finishes
-        //public abstract void AnimationDone(string animation);
     }
 }

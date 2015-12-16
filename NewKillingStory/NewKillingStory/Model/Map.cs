@@ -31,7 +31,7 @@ namespace NewKillingStory
         {
 
         }
-        public void Generate(int[,] map, int size)//krånglig funktion!
+        public void Generate(int[,] map, int size)//krånglig funktion!//fick hjälp med denna!
         {
             for (int x = 0; x < map.GetLength(1); x++)
             {

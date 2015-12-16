@@ -30,7 +30,8 @@ namespace NewKillingStory
         {
             Menu,//we have a menu
             Play,//and a play
-            Options,
+            Pause,
+            GameOver,
         }
 
 
@@ -110,15 +111,23 @@ namespace NewKillingStory
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            //oldMouseState = newMouseState;
+            //newMouseState = Mouse.GetState();
+            //if (oldMouseState.LeftButton == ButtonState.Released && newMouseState.LeftButton == ButtonState.Pressed)
+            //{
+
+            //}
+
             MouseState mouse = Mouse.GetState();
             switch (ScreenState)//creats a Switch with all the diffrent screens!
             {
                 case Gamestate.Menu:
                     IsMouseVisible = true;
                     menuController.Update((float)gameTime.ElapsedGameTime.TotalSeconds, mouse);
-                    player.Update(gameTime);
+                    //player.Update(gameTime);
                     if (menuController.isClicked == true)
                     {
+                        player.Update(gameTime);
                         ScreenState = Gamestate.Play;
                         IsMouseVisible = true;
                     }
@@ -126,6 +135,11 @@ namespace NewKillingStory
 
                 case Gamestate.Play:
                     player.Update(gameTime);
+                    break;
+                case Gamestate.Pause:
+                    IsMouseVisible = true;
+                    break;
+                case Gamestate.GameOver:
                     break;
             }
             // TODO: Add your update logic here
@@ -146,13 +160,17 @@ namespace NewKillingStory
             {
                 case Gamestate.Menu:
                     menuController.Draw(spriteBatch, (float)gameTime.ElapsedGameTime.TotalSeconds);
-                    player.Draw(spriteBatch, character);
+                    //player.Draw(spriteBatch, character);
                     break;
 
                 case Gamestate.Play:
                     gameController.Draw(spriteBatch);//, camera);
                     player.Draw(spriteBatch, character);
 
+                    break;
+                case Gamestate.Pause:
+                    break;
+                case Gamestate.GameOver:
                     break;
             }
             spriteBatch.End();
