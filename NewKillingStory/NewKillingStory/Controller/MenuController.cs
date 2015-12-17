@@ -56,20 +56,20 @@ namespace NewKillingStory.Controller
 
             if (mouseRectangle.Intersects(rectangle))
             {
-                if (color.A == 255)
-                    down = false;
-                if (color.A == 0)
-                    down = true;
-                if (down)
-                    color.A += 3;
-                else color.A -= 3;
+                //if (color.A == 255)
+                //    down = false;
+                //if (color.A == 0)
+                //    down = true;
+                //if (down)
+                //    color.A += 3;
+                //else color.A -= 3;
 
                 if (mousePosition.LeftButton == ButtonState.Pressed)
                     isClicked = true;
             }
             else if (color.A < 255)
             {
-                color.A += 3;
+            //    color.A += 3;
                 isClicked = false;
             }
 

@@ -18,7 +18,7 @@ namespace NewKillingStory.Model
         ///// The texture of the sprite
         protected Texture2D character;
         ///// The position of the SpriteObject
-        protected Vector2 postion;
+        protected Vector2 position;
         ///// Number of frames in the animation
         private int frameIndex;
         private Rectangle[] rectangle;
@@ -35,6 +35,11 @@ namespace NewKillingStory.Model
         private string currentAnimation;
         ///// The velocity of the SpriteObject
         protected Vector2 direction = Vector2.Zero;
+
+        protected int width;
+        protected int height;
+
+        public bool Alive = true;
 
         ///// Our time per frame is equal to 1 divided by frames per second(we are deciding FPS)
         public int FramesPerSecond
@@ -54,7 +59,7 @@ namespace NewKillingStory.Model
         // Constructor of the AnimatedSprite
         public AnimatedSprites(Vector2 position)
         {
-            this.postion = position;
+            this.position = position;
         }
 
         ///// <summary>
@@ -63,7 +68,8 @@ namespace NewKillingStory.Model
         public void AddAnimation(int frames, int yPosition, int xStartFrame, string name, int width, int height)//, Vector2 offset//om jag villl ha en attack sprite!   , int yPos, int xStartFrame, string name, int width, int height, Vector2 offset)
         {
             //int width = character.Width / frames;
-            
+            this.width = width;
+            this.height = height;
             Rectangle[] newRectangle = new Rectangle[frames];// needs a dictionary
 
             for (int i = 0; i < frames; i++)////Fills up the array of rectangles
@@ -98,18 +104,24 @@ namespace NewKillingStory.Model
             }
         }
         ///// Draws the sprite on the screen
-        public void Draw(SpriteBatch spriteBatch, Texture2D character)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(character, postion, animations[currentAnimation][frameIndex], Color.White);
+            spriteBatch.Draw(character, position, animations[currentAnimation][frameIndex], Color.White);
+            //spriteBatch.Draw(character,
+            //    position,
+            //    animations[currentAnimation][frameIndex], 
+            //    Color.White,
+            //    0f,//rotation
+            //    Vector2.Zero,
+            //    0f,
+            //    SpriteEffects.None,
+            //    0f);
         }
         // Plays an animation
         public void PlayAnimation(string name)
         {
-            if (currentAnimation != name && currentDirection == myDirection.none) //Makes sure we won't start a new annimation unless it differs from our current animation
-            {
+            
                 currentAnimation = name;
-                frameIndex = 0;
-            }
         }
     }
 }

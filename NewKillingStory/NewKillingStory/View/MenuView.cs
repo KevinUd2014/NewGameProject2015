@@ -56,6 +56,7 @@ namespace NewKillingStory.View
 
 
             float scale = camera.getScaleForView(menuBackground.Width);
+            float scaleButton = camera.getScaleForView(Playbutton.Width);
 
             //spriteBatch.Draw(menuBackground, Vector2.Zero, menuBackground.Bounds, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0);
             //spriteBatch.Draw(menuBackground,Vector2.Zero, menuBackground.Bounds, new Color(255, 255, 255, (byte)MathHelper.Clamp(mAlphaValue, 0, 255)));
@@ -63,14 +64,24 @@ namespace NewKillingStory.View
             //spriteBatch.Draw(playButton, camera.convertToVisualCoords(playButtonPos, playButton.Width, playButton.Height), playButton.Bounds, Color.White, 0f, Vector2.Zero, buttonScale, SpriteEffects.None, 0);
             spriteBatch.Draw(menuBackground,
                     Vector2.Zero,
-                    menuBackground.Bounds, new Color((byte)MathHelper.Clamp(alphaValue, 22, 255), 255, 255, (byte)MathHelper.Clamp(alphaValue, 22, 255)),
+                    menuBackground.Bounds, 
+                    new Color((byte)MathHelper.Clamp(alphaValue, 22, 255), 255, 255, (byte)MathHelper.Clamp(alphaValue, 22, 255)),
                     0f,
                     Vector2.Zero,
                     scale,
                     SpriteEffects.None,
                     0f);
+
             spriteBatch.Draw(Playbutton, rectangle, color);
-            //spriteBatch.Draw(playButton, rectangle, color);
+            //spriteBatch.Draw(Playbutton,
+            //        Vector2.Zero,
+            //        rectangle,
+            //        color,
+            //        0f,
+            //        Vector2.Zero,
+            //        scaleButton,
+            //        SpriteEffects.None,
+            //        0f);
         }
 
     }

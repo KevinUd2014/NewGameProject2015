@@ -14,14 +14,11 @@ namespace NewKillingStory
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
-        Texture2D character;
-        Player player;
-
+        
         GameController gameController;
         MenuController menuController;
         Camera camera;
-        //Map map;
+        Map map;
 
         //MenuView menuView;
 
@@ -74,18 +71,15 @@ namespace NewKillingStory
             gameController = new GameController();
             camera = new Camera(GraphicsDevice.Viewport);
 
-            player = new Player(new Vector2(340, 220));// start positionen för player!
 
             //Load all the textures here and sound as well!
             Texture2D startMenuBackground = Content.Load<Texture2D>("KillerStory");
             Texture2D playButton = Content.Load<Texture2D>("playButton");
-            character = Content.Load<Texture2D>("imp");
             //character = Content.Load<Texture2D>("Fox");
 
             //menuView = new MenuView();
 
             //load all the classes and give them all the necessary parameters!
-            player.LoadContent(character);
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton);
             gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport);
 
@@ -127,14 +121,13 @@ namespace NewKillingStory
                     //player.Update(gameTime);
                     if (menuController.isClicked == true)
                     {
-                        player.Update(gameTime);
                         ScreenState = Gamestate.Play;
                         IsMouseVisible = true;
                     }
                     break;
 
                 case Gamestate.Play:
-                    player.Update(gameTime);
+                    gameController.Update(gameTime);
                     break;
                 case Gamestate.Pause:
                     IsMouseVisible = true;
@@ -165,7 +158,6 @@ namespace NewKillingStory
 
                 case Gamestate.Play:
                     gameController.Draw(spriteBatch);//, camera);
-                    player.Draw(spriteBatch, character);
 
                     break;
                 case Gamestate.Pause:

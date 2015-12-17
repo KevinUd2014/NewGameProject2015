@@ -12,13 +12,20 @@ namespace NewKillingStory
     class Map
     {
         //Camera camera;
-        private List<CollisionTiles> collisiontiles = new List<CollisionTiles>();// skapar några listor som gör att jag kan lägga till alla mina tiles spriset här i för att skapa kollision
+        private List<CollisionTiles> mapTiles = new List<CollisionTiles>();// skapar några listor som gör att jag kan lägga till alla mina tiles spriset här i för att skapa kollision
 
-        public List<CollisionTiles> CollisionTiles
+        private int[,] map;
+
+        public int[,] tilemap
         {
-            get { return collisiontiles; }// denna läggger man in kollision med!
+            get { return map; }
         }
-        private int width, height;// tiles kommer ha en höjd och en bredd// följde en liten guid på denna!
+
+        public List<CollisionTiles> MapTiles
+        {
+            get { return mapTiles; }// denna läggger man in kollision med!
+        }
+        private int width, height;// tiles kommer ha en höjd och en bredd// följde en liten guide på denna!
         public int Width
         {
             get { return width; }
@@ -41,17 +48,19 @@ namespace NewKillingStory
 
                     if(number > 0)
                     {
-                        collisiontiles.Add(new CollisionTiles(number, new Rectangle(x * size, y * size, size, size)));
+                        mapTiles.Add(new CollisionTiles(number, new Rectangle(x * size, y * size, size, size)));
                     }
-
-                    width = (x + 1) * size;
-                    height = (y + 1) * size;
                 }
             }
+
+
+            width = map.GetLength(1) * size;
+            height = map.GetLength(0) * size;
+            this.map = map;
         }
         public void Draw(SpriteBatch spriteBatch)//, Camera camera)
         {
-            foreach (CollisionTiles tile in collisiontiles)//för varje tile i denna ritar vi ut en tile!
+            foreach (CollisionTiles tile in mapTiles)//för varje tile i denna ritar vi ut en tile!
             {
                 tile.Draw(spriteBatch);//, camera.getScaleForView(width*2));
             }
