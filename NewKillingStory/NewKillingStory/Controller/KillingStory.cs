@@ -115,16 +115,6 @@ namespace NewKillingStory
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            //oldMouseState = newMouseState;
-            //newMouseState = Mouse.GetState();
-            //if (oldMouseState.LeftButton == ButtonState.Released && newMouseState.LeftButton == ButtonState.Pressed)
-            //{
-
-            //}
-
             MouseState mouse = Mouse.GetState();
             switch (ScreenState)//creats a Switch with all the diffrent screens!
             {
@@ -136,31 +126,51 @@ namespace NewKillingStory
                     {
                         ScreenState = Gamestate.Play;
                         IsMouseVisible = true;
+                        menuController.isClicked = false;
                     }
                     break;
                 case Gamestate.Play:
-                    if(Keyboard.GetState().IsKeyDown(Keys.Enter))
+
+                    IsMouseVisible = false;
+
+                    //if (menuController.isClicked == false)
+                    //    menuController.isClicked = true;
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                     {
                         ScreenState = Gamestate.Pause;
-                        buttonPlay.isClicked = false;
+                        buttonPlay.isClicked = false;//vet inte om denna behövs!
+                        //menuController.isClicked = true;
                     }
+                    //menuController.isClicked = true;
                     gameController.Update(gameTime);
+
                     break;
                 case Gamestate.Pause:
                     IsMouseVisible = true;
-
+                    
                     if (buttonPlay.isClicked)
+                    {
                         ScreenState = Gamestate.Play;
+                    }
                     if (buttonQuit.isClicked)
                         Exit();
                     if (buttonMainMenu.isClicked)
+                    {
                         ScreenState = Gamestate.Menu;
+                        buttonPlay.isClicked = false;//vet inte om denna behövs!
+
+                        //menuController.isClicked = false;
+                        //menuController.isClicked = true;
+                    }
 
                     buttonPlay.Update(mouse);
                     buttonQuit.Update(mouse);
                     buttonMainMenu.Update(mouse);
+
                     break;
                 case Gamestate.GameOver:
+
                     break;
             }
             // TODO: Add your update logic here
