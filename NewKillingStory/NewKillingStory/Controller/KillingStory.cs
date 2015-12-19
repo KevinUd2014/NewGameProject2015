@@ -18,9 +18,11 @@ namespace NewKillingStory
         GameController gameController;
         MenuController menuController;
         Camera camera;
-        Map map;
 
-        //MenuView menuView;
+        //pause funktionen
+        Texture2D pauseTexture;
+        Rectangle pausedRectangle;
+        PauseButton buttonPlay, buttonQuit, buttonMainMenu;
 
         /// http://gamedev.stackexchange.com/questions/108518/monogame-screen-transition-with-fading
         enum Gamestate//vet inte om denna!Lånade från filip!
@@ -77,6 +79,17 @@ namespace NewKillingStory
             Texture2D playButton = Content.Load<Texture2D>("playButton");
             //character = Content.Load<Texture2D>("Fox");
 
+            //pause saker
+            pauseTexture = Content.Load<Texture2D>("PauseMenu");
+            pausedRectangle = new Rectangle(0, 0, pauseTexture.Width, pauseTexture.Height);
+
+            buttonPlay = new PauseButton();
+            buttonPlay.Load(Content.Load<Texture2D>("ResumeButton"), new Vector2(400, 400));
+            buttonQuit = new PauseButton();
+            buttonQuit.Load(Content.Load<Texture2D>("QuitButton"), new Vector2(400, 450));
+            buttonMainMenu = new PauseButton();
+            buttonMainMenu.Load(Content.Load<Texture2D>("MenuButton"), new Vector2(400, 500));
+
             //menuView = new MenuView();
 
             //load all the classes and give them all the necessary parameters!
@@ -125,12 +138,27 @@ namespace NewKillingStory
                         IsMouseVisible = true;
                     }
                     break;
-
                 case Gamestate.Play:
+                    if(Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    {
+                        ScreenState = Gamestate.Pause;
+                        buttonPlay.isClicked = false;
+                    }
                     gameController.Update(gameTime);
                     break;
                 case Gamestate.Pause:
                     IsMouseVisible = true;
+
+                    if (buttonPlay.isClicked)
+                        ScreenState = Gamestate.Play;
+                    if (buttonQuit.isClicked)
+                        Exit();
+                    if (buttonMainMenu.isClicked)
+                        ScreenState = Gamestate.Menu;
+
+                    buttonPlay.Update(mouse);
+                    buttonQuit.Update(mouse);
+                    buttonMainMenu.Update(mouse);
                     break;
                 case Gamestate.GameOver:
                     break;
@@ -153,14 +181,17 @@ namespace NewKillingStory
             {
                 case Gamestate.Menu:
                     menuController.Draw(spriteBatch, (float)gameTime.ElapsedGameTime.TotalSeconds);
-                    //player.Draw(spriteBatch, character);
                     break;
-
                 case Gamestate.Play:
                     gameController.Draw(spriteBatch);//, camera);
-
                     break;
                 case Gamestate.Pause:
+
+                    spriteBatch.Draw(pauseTexture, pausedRectangle, Color.White);
+                    buttonPlay.Draw(spriteBatch);
+                    buttonMainMenu.Draw(spriteBatch);
+                    buttonQuit.Draw(spriteBatch);
+
                     break;
                 case Gamestate.GameOver:
                     break;
