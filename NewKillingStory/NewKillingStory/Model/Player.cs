@@ -171,7 +171,7 @@ namespace NewKillingStory.Model
             animatedSprites.Add(new Flame(position,V));
         }
 
-        private bool checkForCollision(Vector2 pos)
+        private bool checkForCollision(Vector2 pos)//denna funktion fick jag hjälp med då den är ganska komplex och avancerad!
         {
             pos.X += hitbox.X;
             pos.Y += hitbox.Y;
