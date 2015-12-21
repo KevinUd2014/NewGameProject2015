@@ -32,7 +32,7 @@ namespace NewKillingStory.Model
         }
         public void createParticle()
         {
-            //double anything = random1.Next();
+            double anything = random1.Next();
             //sätter partiklarna -50 utanför skärmen
             particles.Add(new ParticleOverScreen(texture, new Vector2(-20 + (float)random1.NextDouble() * spawnWidth, 0), new Vector2(1, random2.Next(5, 8)), camera));
         }
