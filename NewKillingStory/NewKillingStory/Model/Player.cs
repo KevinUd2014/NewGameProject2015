@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 //using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NewKillingStory.View;
 
 namespace NewKillingStory.Model
 {
@@ -19,15 +20,16 @@ namespace NewKillingStory.Model
 
         private float lastShot = 0;
         private float fireRate = 0.2f;
-
+        Camera camera;
         private List<AnimatedSprites> animatedSprites;
 
         //Texture2D character;
         //bool attacking = false;
         
         /// The constructor of the Player class
-        public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites) : base(position)//this position is handled through the base class
+        public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera) : base(position, camera)//this position is handled through the base class
         {
+            this.camera = camera;
             this.map = map;
             this.animatedSprites = animatedSprites;
 
@@ -168,7 +170,7 @@ namespace NewKillingStory.Model
 
         private void attack(Vector2 V)
         {
-            animatedSprites.Add(new Flame(position,V));
+            animatedSprites.Add(new Flame(position,V, camera));
         }
 
         private bool checkForCollision(Vector2 pos)//denna funktion fick jag hjälp med då den är ganska komplex och avancerad!

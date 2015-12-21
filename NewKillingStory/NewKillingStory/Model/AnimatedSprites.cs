@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NewKillingStory.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace NewKillingStory.Model
         private string currentAnimation;
         ///// The velocity of the SpriteObject
         protected Vector2 direction = Vector2.Zero;
-
+        Camera camera;
         protected int width;
         protected int height;
 
@@ -57,9 +58,16 @@ namespace NewKillingStory.Model
         //private Dictionary<string, Vector2> sOffsets = new Dictionary<string, Vector2>();
 
         // Constructor of the AnimatedSprite
-        public AnimatedSprites(Vector2 position)
+        //public AnimatedSprites(Vector2 position, Camera camera)
+        //{
+        //    this.camera = camera;
+        //    this.position = position;
+        //}
+
+        public AnimatedSprites(Vector2 position, Camera camera)
         {
             this.position = position;
+            this.camera = camera;
         }
 
         ///// <summary>
@@ -106,16 +114,15 @@ namespace NewKillingStory.Model
         ///// Draws the sprite on the screen
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(character, position, animations[currentAnimation][frameIndex], Color.White);
-            //spriteBatch.Draw(character,
-            //    position,
-            //    animations[currentAnimation][frameIndex], 
-            //    Color.White,
-            //    0f,//rotation
-            //    Vector2.Zero,
-            //    0f,
-            //    SpriteEffects.None,
-            //    0f);
+            spriteBatch.Draw(character,
+                position,
+                animations[currentAnimation][frameIndex],
+                Color.White,
+                0f,//rotation
+                Vector2.Zero,
+                camera.getScaleForView(character.Width*4),
+                SpriteEffects.None,
+                0f);
         }
         // Plays an animation
         public void PlayAnimation(string name)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NewKillingStory.View;
 
 namespace NewKillingStory.Model
 {
@@ -13,8 +14,9 @@ namespace NewKillingStory.Model
         private static Texture2D texture;
         private float age;
         private float range;
+        Camera camera;
 
-        public Flame(Vector2 position, Vector2 velocity, float range = 2f) : base(position)
+        public Flame(Vector2 position, Vector2 velocity, Camera camera, float range = 2f) : base(position, camera)
         {
             this.velocity = velocity;
             this.range = range;

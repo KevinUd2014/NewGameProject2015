@@ -18,6 +18,8 @@ namespace NewKillingStory
         GameController gameController;
         MenuController menuController;
         Camera camera;
+        ParticleGenerator snow;
+        ParticleGenerator rain;
 
         //pause funktionen
         Texture2D pauseTexture;
@@ -73,6 +75,9 @@ namespace NewKillingStory
             gameController = new GameController();
             camera = new Camera(GraphicsDevice.Viewport);
 
+            snow = new ParticleGenerator(Content.Load<Texture2D>("Snowflake"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
+            //rain = new ParticleGenerator(Content.Load<Texture2D>("Rain"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
+
 
             //Load all the textures here and sound as well!
             Texture2D startMenuBackground = Content.Load<Texture2D>("KillerStory");
@@ -94,7 +99,7 @@ namespace NewKillingStory
 
             //load all the classes and give them all the necessary parameters!
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton);
-            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport);
+            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera);
 
             menuController.setPosition(new Vector2(400, 400));// sätter positionen för knappen!
         }
@@ -130,6 +135,9 @@ namespace NewKillingStory
                     }
                     break;
                 case Gamestate.Play:
+
+                    snow.Update(gameTime, graphics.GraphicsDevice);
+                    //rain.Update(gameTime, graphics.GraphicsDevice);
 
                     IsMouseVisible = false;
 
@@ -194,6 +202,9 @@ namespace NewKillingStory
                     break;
                 case Gamestate.Play:
                     gameController.Draw(spriteBatch);//, camera);
+
+                    snow.Draw(spriteBatch);//snöpartiklarna!
+                    //rain.Draw(spriteBatch);//regnpartiklarna!
                     break;
                 case Gamestate.Pause:
 

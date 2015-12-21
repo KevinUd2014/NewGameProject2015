@@ -14,6 +14,7 @@ namespace NewKillingStory.Controller
     {
         Map map;
         private Player player;
+        Camera camera;
         public List<AnimatedSprites> AnimatedSprites;
 
         public GameController()
@@ -21,11 +22,12 @@ namespace NewKillingStory.Controller
 
         }
 
-        public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport)
+        public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport, Camera camera)
         {
+            this.camera = camera;
             AnimatedSprites = new List<Model.AnimatedSprites>(); 
             map = new Map();
-            player = new Player(new Vector2(340, 220), map, AnimatedSprites);// start positionen för player!
+            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera);// start positionen för player!
             var character = Content.Load<Texture2D>("imp");
             player.LoadContent(character);
 
