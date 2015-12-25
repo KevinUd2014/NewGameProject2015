@@ -75,19 +75,6 @@ namespace NewKillingStory.Model
             
             base.Update(gameTime);
         }
-        //public void updateBallCollision()
-        //{
-        //    //postion += ball.getVelocity;
-        //    if (postion.X > 840 || postion.X < 1)
-        //    {
-        //        direction = Vector2.Zero;
-        //    }
-        //    if (postion.Y > 840 || postion.Y < 1)
-        //    {
-        //        direction = Vector2.Zero;
-        //    }
-        //}
-
         private void HandleKeyboardInput(KeyboardState keyState, GameTime gameTime)
         {
             //if (!attacking)

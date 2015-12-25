@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using NewKillingStory.Model;
 using NewKillingStory.View;
 using System;
@@ -34,9 +35,8 @@ namespace NewKillingStory.Controller
             Flame.SetTexture(Content.Load<Texture2D>("flame_sprite"));
 
             Tiles.Content = Content;
-
+            
             Level1();
-
 
             //map.Generate(new int[,]{//skapar här ett till lager med nya tiles t.ex. så kan man lägga in träd i denna vilket kanske gör det lättare att ksapa kollisioner med dom!
             //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -83,10 +83,10 @@ namespace NewKillingStory.Controller
                 { 4,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 4,1,4,4,4,1,1,1,1,1,4,4,1,1},
                 { 4,1,4,1,1,1,1,1,1,1,4,4,1,1},
-                { 4,1,4,1,1,1,1,1,1,1,1,1,1,1},
-                { 4,1,4,1,1,1,1,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,1,1,1,1,1,1,1,6,6},
+                { 4,1,4,1,1,4,1,1,1,1,1,1,1,1},
+                { 4,1,4,1,1,4,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,4,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,4,1,1,1,1,1,1,6,6},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
