@@ -28,7 +28,7 @@ namespace NewKillingStory.View
                 scale = YCoord;
             }
         }
-        public Vector2 convertToVisualCoords(Vector2 position, float Width, float Height)//kopierade från uppgift 3 ungefär
+        public Vector2 convertToVisualCoords(Vector2 position)//kopierade från uppgift 3 ungefär
         {
             float screenX = (XCoord * position.X);
             float screenY = (YCoord * position.Y);

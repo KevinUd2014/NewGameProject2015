@@ -53,7 +53,6 @@
     <Compile Include="View\ParticleOverScreen.cs" />
     <Compile Include="View\Tiles.cs" />
     <Compile Include="View\Camera.cs" />
-    <Compile Include="View\GameView.cs" />
     <Compile Include="View\MenuView.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +97,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\QuitButton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Rain.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\ResumeButton.png">

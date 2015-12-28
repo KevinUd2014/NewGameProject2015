@@ -11,7 +11,7 @@ namespace NewKillingStory
 {
     class Map
     {
-        //Camera camera;
+        Camera camera;
         private List<CollisionTiles> mapTiles = new List<CollisionTiles>();// skapar några listor som gör att jag kan lägga till alla mina tiles spriset här i för att skapa kollision
 
         private int[,] map;
@@ -34,9 +34,9 @@ namespace NewKillingStory
         {
             get { return height; }
         }
-        public Map()
+        public Map(Camera camera)
         {
-
+            this.camera = camera;
         }
         public void Generate(int[,] map, int size)//krånglig funktion!//fick hjälp med denna!
         {
@@ -48,7 +48,7 @@ namespace NewKillingStory
 
                     if(number > 0)
                     {
-                        mapTiles.Add(new CollisionTiles(number, new Rectangle(x * size, y * size, size, size)));
+                        mapTiles.Add(new CollisionTiles(number, new Rectangle(x * size, y * size, size, size), camera));
                     }
                 }
             }

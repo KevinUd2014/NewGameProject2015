@@ -13,20 +13,12 @@ namespace NewKillingStory.View
         int alphaValue = 1;
         int fadeIncrement = 3;
         double fadeDelay = 0.010;
-
-        Texture2D playText;
-
+        
         Camera camera;
-        //Vector2 playButtonPos;
 
         public MenuView(Camera camera)
         {
             this.camera = camera;
-
-            //playButtonPos = new Vector2(0.4f, 0.4f);
-
-            //size = new Vector2(graphics.GraphicsDevice.Viewport.Width / 20, graphics.GraphicsDevice.Viewport.Height / 20);
-
         }
 
         public void Update(float elapsedSeconds)
@@ -44,11 +36,6 @@ namespace NewKillingStory.View
                     fadeIncrement *= -1;
                 }
             }
-
-            //this.playButton = playButton;
-
-            //Vector2 mouseModelPosition = camera.convertToLogicalCoords(mousePosition);
-           
         }
 
         public void Draw(SpriteBatch spriteBatch, float elapsedSeconds, Texture2D menuBackground, Texture2D Playbutton, Rectangle rectangle, Color color)
@@ -58,10 +45,6 @@ namespace NewKillingStory.View
             float scale = camera.getScaleForView(menuBackground.Width);
             float scaleButton = camera.getScaleForView(Playbutton.Width);
 
-            //spriteBatch.Draw(menuBackground, Vector2.Zero, menuBackground.Bounds, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0);
-            //spriteBatch.Draw(menuBackground,Vector2.Zero, menuBackground.Bounds, new Color(255, 255, 255, (byte)MathHelper.Clamp(mAlphaValue, 0, 255)));
-            //spriteBatch.Draw(menuBackground,Vector2.Zero, camera.getScaleForView(menuBackground.Width), new Color((byte)MathHelper.Clamp(mAlphaValue, 22, 255), 255, 255, (byte)MathHelper.Clamp(mAlphaValue, 22, 255)));
-            //spriteBatch.Draw(playButton, camera.convertToVisualCoords(playButtonPos, playButton.Width, playButton.Height), playButton.Bounds, Color.White, 0f, Vector2.Zero, buttonScale, SpriteEffects.None, 0);
             spriteBatch.Draw(menuBackground,
                     Vector2.Zero,
                     menuBackground.Bounds, 
@@ -73,15 +56,16 @@ namespace NewKillingStory.View
                     0f);
 
             spriteBatch.Draw(Playbutton, rectangle, color);
-            //spriteBatch.Draw(Playbutton,
-            //        Vector2.Zero,
-            //        rectangle,
-            //        color,
-            //        0f,
-            //        Vector2.Zero,
-            //        scaleButton,
-            //        SpriteEffects.None,
-            //        0f);
+            //spriteBatch.Draw(Playbutton,//texture
+            //   null,
+            //   rectangle,//rectangle
+            //   null,//rectangle source
+            //   null,//origin
+            //   0f,//rotation
+            //   new Vector2(camera.getScaleForView(Playbutton.Width)),
+            //   Color.White,//color 
+            //   SpriteEffects.None,//spriteeffect
+            //   0f);//depth of layer
         }
 
     }

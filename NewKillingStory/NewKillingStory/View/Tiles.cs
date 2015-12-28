@@ -11,6 +11,12 @@ namespace NewKillingStory
 {
     class Tiles
     {
+        Camera camera;
+
+        public Tiles(Camera camera)
+        {
+            this.camera = camera;
+        }
         protected Texture2D texture;
         //protected Texture2D trees;
 
@@ -31,19 +37,22 @@ namespace NewKillingStory
         public void Draw(SpriteBatch spriteBatch)//, Camera camera)
         {
             spriteBatch.Draw(texture, rectangle, Color.White);
-            //spriteBatch.Draw(texture,
-            //        Vector2.Zero,
-            //        rectangle, Color.White,
-            //        0f,
-            //        Vector2.Zero,
-            //        camera,
-            //        SpriteEffects.None,
-            //        0f);
+
+            //spriteBatch.Draw(texture,//texture
+            //    null,
+            //    rectangle,//rectangle
+            //    null,//rectangle source
+            //    null,//origin
+            //    0f,//rotation
+            //    new Vector2(camera.getScaleForView(texture.Width)*100),//scale
+            //    Color.White,//color 
+            //    SpriteEffects.None,//spriteeffect
+            //    0f);//depth of layer
         }
     }
     class CollisionTiles : Tiles
     {
-        public CollisionTiles(int i, Rectangle newRectangle)
+        public CollisionTiles(int i, Rectangle newRectangle, Camera camera) : base(camera)
         {
             texture = Content.Load<Texture2D>("Tiles" + i);
             //trees = Content.Load<Texture2D>("Tree" + i);

@@ -23,14 +23,11 @@ namespace NewKillingStory.Controller
 
         Color color = new Color(255, 255, 255, 255);
         
-        bool down;
         public bool isClicked;
 
         public MenuController()
         {
-
         }
-
         public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport,Texture2D Background, Texture2D Play)
         {
             camera = new Camera(viewport);
@@ -48,9 +45,6 @@ namespace NewKillingStory.Controller
 
         public void Update(float elapsedSeconds, MouseState mousePosition)
         {
-            //oldMouseState = newMouseState;
-            //newMouseState = Mouse.GetState();
-
             rectangle = new Rectangle((int)position.X, (int)position.Y, 80, 50);//, (int)size.X, (int)size.Y //storleken på playknappen avgörs här!
             Rectangle mouseRectangle = new Rectangle(mousePosition.X, mousePosition.Y, 1, 1);//en rektangel på musen!
 
@@ -72,18 +66,7 @@ namespace NewKillingStory.Controller
             //    color.A += 3;
                 isClicked = false;
             }
-
-
-            //var mousePosition = new Vector2(newMouseState.X, newMouseState.Y);
-            //mousePosition = new Vector2(newMouseState.X, newMouseState.Y);
-
             menuView.Update(elapsedSeconds);
-            //oldMouseState = newMouseState;
-            //newMouseState = Mouse.GetState();
-            //if (oldMouseState.LeftButton == ButtonState.Released && newMouseState.LeftButton == ButtonState.Pressed)
-            //{
-
-            //}
         }
 
         public void Draw(SpriteBatch spriteBatch, float elapsedSeconds)

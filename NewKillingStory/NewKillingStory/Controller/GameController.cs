@@ -27,7 +27,7 @@ namespace NewKillingStory.Controller
         {
             this.camera = camera;
             AnimatedSprites = new List<Model.AnimatedSprites>(); 
-            map = new Map();
+            map = new Map(camera);
             player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera);// start positionen för player!
             var character = Content.Load<Texture2D>("imp");
             player.LoadContent(character);

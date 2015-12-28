@@ -27,7 +27,7 @@ namespace NewKillingStory
         PauseButton buttonPlay, buttonQuit, buttonMainMenu;
 
         /// http://gamedev.stackexchange.com/questions/108518/monogame-screen-transition-with-fading
-        enum Gamestate//vet inte om denna!Lånade från filip!
+        enum Gamestate//vet inte om denna! verkade vara det bästa sättet
         {
             Menu,//we have a menu
             Play,//and a play
@@ -41,7 +41,7 @@ namespace NewKillingStory
             graphics = new GraphicsDeviceManager(this);
 
             //Puts the size of the window!
-            graphics.PreferredBackBufferHeight = 840;
+            graphics.PreferredBackBufferHeight =840;
             graphics.PreferredBackBufferWidth = 840;
             
             Content.RootDirectory = "Content";
@@ -75,8 +75,8 @@ namespace NewKillingStory
             gameController = new GameController();
             camera = new Camera(GraphicsDevice.Viewport);
 
-            snow = new ParticleGenerator(Content.Load<Texture2D>("Snowflake"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
-            //rain = new ParticleGenerator(Content.Load<Texture2D>("Rain"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
+            //snow = new ParticleGenerator(Content.Load<Texture2D>("Snowflake"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
+            rain = new ParticleGenerator(Content.Load<Texture2D>("Rain"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
 
 
             //Load all the textures here and sound as well!
@@ -136,8 +136,8 @@ namespace NewKillingStory
                     break;
                 case Gamestate.Play:
 
-                    snow.Update(gameTime, graphics.GraphicsDevice);
-                    //rain.Update(gameTime, graphics.GraphicsDevice);
+                    //snow.Update(gameTime, graphics.GraphicsDevice);
+                    rain.Update(gameTime, graphics.GraphicsDevice);
 
                     IsMouseVisible = false;
 
@@ -203,8 +203,8 @@ namespace NewKillingStory
                 case Gamestate.Play:
                     gameController.Draw(spriteBatch);//, camera);
 
-                    snow.Draw(spriteBatch);//snöpartiklarna!
-                    //rain.Draw(spriteBatch);//regnpartiklarna!
+                    //snow.Draw(spriteBatch);//snöpartiklarna!
+                    rain.Draw(spriteBatch);//regnpartiklarna!
                     break;
                 case Gamestate.Pause:
 

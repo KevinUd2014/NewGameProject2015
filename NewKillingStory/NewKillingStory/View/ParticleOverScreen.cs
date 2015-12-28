@@ -31,7 +31,6 @@ namespace NewKillingStory.View
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(texture, position, Color.White);
             spriteBatch.Draw(texture,
                 position,
                 null,
