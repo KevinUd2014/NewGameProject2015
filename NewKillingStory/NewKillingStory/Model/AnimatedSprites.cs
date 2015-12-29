@@ -119,7 +119,6 @@ namespace NewKillingStory.Model
         // Plays an animation
         public void PlayAnimation(string name)
         {
-            
                 currentAnimation = name;
         }
     }

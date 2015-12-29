@@ -22,6 +22,7 @@ namespace NewKillingStory.Model
             this.range = range;
 
             character = texture;
+
             FramesPerSecond = 18;
             AddAnimation(6, 0, 0, "fire", 32, 32);
             PlayAnimation("fire");
@@ -29,6 +30,7 @@ namespace NewKillingStory.Model
         public override void Update(GameTime gameTime)
         {
             position += velocity;
+
             age += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (age > range)
                 Alive = false;

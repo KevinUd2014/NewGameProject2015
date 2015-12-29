@@ -72,7 +72,7 @@ namespace NewKillingStory
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Texture2D enemyTexture = Content.Load<Texture2D>("Bat");
+            
             //create all the necessary classes!
             menuController = new MenuController();
             gameController = new GameController();
@@ -80,13 +80,14 @@ namespace NewKillingStory
             //camera
             camera = new Camera(GraphicsDevice.Viewport);
             //enemy
-            enemy = new Enemy(enemyTexture, camera, graphics);
+            //enemy = new Enemy(enemyTexture, camera, graphics);
 
             //snow = new ParticleGenerator(Content.Load<Texture2D>("Snowflake"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
             rain = new ParticleGenerator(Content.Load<Texture2D>("Rain"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
 
 
             //Load all the textures here and sound as well!
+            Texture2D enemyTexture = Content.Load<Texture2D>("Bat");
             Texture2D startMenuBackground = Content.Load<Texture2D>("KillerStory");
             Texture2D playButton = Content.Load<Texture2D>("playButton");
             //character = Content.Load<Texture2D>("Fox");
@@ -106,7 +107,7 @@ namespace NewKillingStory
 
             //load all the classes and give them all the necessary parameters!
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton);
-            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera);
+            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics);
 
             menuController.setPosition(new Vector2(400, 400));// sätter positionen för knappen!
         }
@@ -142,7 +143,7 @@ namespace NewKillingStory
                     }
                     break;
                 case Gamestate.Play:
-                    enemy.Update(gameTime);
+                    //enemy.Update(gameTime);
                     //snow.Update(gameTime, graphics.GraphicsDevice);
                     rain.Update(gameTime, graphics.GraphicsDevice);
 
@@ -167,18 +168,21 @@ namespace NewKillingStory
                     if (buttonPlay.isClicked)
                     {
                         ScreenState = Gamestate.Play;
+                        //gameController.restarLevel();
+                        //gameController.Update(gameTime);
+                        //ResetElapsedTime();
                     }
                     if (buttonQuit.isClicked)
                         Exit();
                     if (buttonMainMenu.isClicked)
                     {
                         ScreenState = Gamestate.Menu;
-                        buttonPlay.isClicked = false;//vet inte om denna behövs!
+                        buttonPlay.isClicked = true;//vet inte om denna behövs!
 
                         //menuController.isClicked = false;
-                        //menuController.isClicked = true;
+                        
                     }
-
+                    //buttonPlay.isClicked = false;
                     buttonPlay.Update(mouse);
                     buttonQuit.Update(mouse);
                     buttonMainMenu.Update(mouse);
@@ -209,7 +213,7 @@ namespace NewKillingStory
                     break;
                 case Gamestate.Play:
                     gameController.Draw(spriteBatch);//, camera);
-                    enemy.Draw(spriteBatch);
+                    //enemy.Draw(spriteBatch);
 
                     //snow.Draw(spriteBatch);//snöpartiklarna!
                     rain.Draw(spriteBatch);//regnpartiklarna!
@@ -223,6 +227,7 @@ namespace NewKillingStory
 
                     break;
                 case Gamestate.GameOver:
+
                     break;
             }
             spriteBatch.End();
