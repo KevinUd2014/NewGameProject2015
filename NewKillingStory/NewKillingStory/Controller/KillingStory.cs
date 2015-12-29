@@ -14,6 +14,8 @@ namespace NewKillingStory
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Enemy enemy;
         
         GameController gameController;
         MenuController menuController;
@@ -70,10 +72,15 @@ namespace NewKillingStory
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            Texture2D enemyTexture = Content.Load<Texture2D>("Bat");
             //create all the necessary classes!
             menuController = new MenuController();
             gameController = new GameController();
+            
+            //camera
             camera = new Camera(GraphicsDevice.Viewport);
+            //enemy
+            enemy = new Enemy(enemyTexture, camera, graphics);
 
             //snow = new ParticleGenerator(Content.Load<Texture2D>("Snowflake"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
             rain = new ParticleGenerator(Content.Load<Texture2D>("Rain"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
@@ -135,7 +142,7 @@ namespace NewKillingStory
                     }
                     break;
                 case Gamestate.Play:
-
+                    enemy.Update(gameTime);
                     //snow.Update(gameTime, graphics.GraphicsDevice);
                     rain.Update(gameTime, graphics.GraphicsDevice);
 
@@ -202,6 +209,7 @@ namespace NewKillingStory
                     break;
                 case Gamestate.Play:
                     gameController.Draw(spriteBatch);//, camera);
+                    enemy.Draw(spriteBatch);
 
                     //snow.Draw(spriteBatch);//snöpartiklarna!
                     rain.Draw(spriteBatch);//regnpartiklarna!
