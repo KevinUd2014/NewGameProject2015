@@ -26,7 +26,9 @@ namespace NewKillingStory
         //pause funktionen
         Texture2D pauseTexture;
         Rectangle pausedRectangle;
-        PauseButton buttonPlay, buttonQuit, buttonMainMenu;
+        Texture2D pauseInstructions;
+        Rectangle pausedRectangleInstruction;
+        PauseButton buttonPlay, buttonQuit, buttonMainMenu, buttonInstruction, buttonBack;
 
         /// http://gamedev.stackexchange.com/questions/108518/monogame-screen-transition-with-fading
         enum Gamestate//vet inte om denna! verkade vara det bästa sättet
@@ -34,6 +36,7 @@ namespace NewKillingStory
             Menu,//we have a menu
             Play,//and a play
             Pause,
+            Instructions,
             GameOver,
         }
 
@@ -96,12 +99,19 @@ namespace NewKillingStory
             pauseTexture = Content.Load<Texture2D>("PauseMenu");
             pausedRectangle = new Rectangle(0, 0, pauseTexture.Width, pauseTexture.Height);
 
+            pauseInstructions = Content.Load<Texture2D>("PauseInstructions");
+            pausedRectangleInstruction = new Rectangle(0, 0, pauseTexture.Width, pauseTexture.Height);
+
             buttonPlay = new PauseButton();
-            buttonPlay.Load(Content.Load<Texture2D>("ResumeButton"), new Vector2(400, 400));
+            buttonPlay.Load(Content.Load<Texture2D>("ResumeButton2"), new Vector2(400, 400));
             buttonQuit = new PauseButton();
-            buttonQuit.Load(Content.Load<Texture2D>("QuitButton"), new Vector2(400, 450));
+            buttonQuit.Load(Content.Load<Texture2D>("QuitButton2"), new Vector2(400, 450));
             buttonMainMenu = new PauseButton();
-            buttonMainMenu.Load(Content.Load<Texture2D>("MenuButton"), new Vector2(400, 500));
+            buttonMainMenu.Load(Content.Load<Texture2D>("MenuButton2"), new Vector2(400, 500));
+            buttonInstruction = new PauseButton();
+            buttonInstruction.Load(Content.Load<Texture2D>("InstructionsButton"), new Vector2(400, 550));
+            buttonBack = new PauseButton();
+            buttonBack.Load(Content.Load<Texture2D>("ButtonBack"), new Vector2(740, 780));
 
             //menuView = new MenuView();
 
@@ -145,7 +155,7 @@ namespace NewKillingStory
                 case Gamestate.Play:
                     //enemy.Update(gameTime);
                     //snow.Update(gameTime, graphics.GraphicsDevice);
-                    rain.Update(gameTime, graphics.GraphicsDevice);
+                    //rain.Update(gameTime, graphics.GraphicsDevice);
 
                     IsMouseVisible = false;
                    
@@ -182,10 +192,25 @@ namespace NewKillingStory
                         //menuController.isClicked = false;
                         
                     }
+                    if(buttonInstruction.isClicked)
+                    {
+                        ScreenState = Gamestate.Instructions;
+                    }
                     //buttonPlay.isClicked = false;
                     buttonPlay.Update(mouse);
                     buttonQuit.Update(mouse);
                     buttonMainMenu.Update(mouse);
+                    buttonInstruction.Update(mouse);
+
+                    break;
+                case Gamestate.Instructions:
+
+                    IsMouseVisible = true;
+                    if (buttonBack.isClicked)
+                    {
+                        ScreenState = Gamestate.Pause;
+                    }
+                    buttonBack.Update(mouse);
 
                     break;
                 case Gamestate.GameOver:
@@ -216,7 +241,7 @@ namespace NewKillingStory
                     //enemy.Draw(spriteBatch);
 
                     //snow.Draw(spriteBatch);//snöpartiklarna!
-                    rain.Draw(spriteBatch);//regnpartiklarna!
+                    //rain.Draw(spriteBatch);//regnpartiklarna!
                     break;
                 case Gamestate.Pause:
 
@@ -224,7 +249,13 @@ namespace NewKillingStory
                     buttonPlay.Draw(spriteBatch);
                     buttonMainMenu.Draw(spriteBatch);
                     buttonQuit.Draw(spriteBatch);
+                    buttonInstruction.Draw(spriteBatch);
 
+                    break;
+                case Gamestate.Instructions:
+                    spriteBatch.Draw(pauseInstructions, pausedRectangle, Color.White);
+
+                    buttonBack.Draw(spriteBatch);
                     break;
                 case Gamestate.GameOver:
 

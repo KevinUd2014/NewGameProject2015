@@ -52,8 +52,6 @@ namespace NewKillingStory
                     }
                 }
             }
-
-
             width = map.GetLength(1) * size;
             height = map.GetLength(0) * size;
             this.map = map;
