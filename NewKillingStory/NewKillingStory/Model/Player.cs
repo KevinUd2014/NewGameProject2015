@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 //using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NewKillingStory.View;
+using NewKillingStory.Controller;
 
 namespace NewKillingStory.Model
 {
@@ -25,7 +26,7 @@ namespace NewKillingStory.Model
 
         //Texture2D character;
         //bool attacking = false;
-        
+
         /// The constructor of the Player class
         public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera) : base(position, camera)//this position is handled through the base class
         {
@@ -147,7 +148,7 @@ namespace NewKillingStory.Model
             animatedSprites.Add(new Flame(position,V, camera));
         }
 
-        private bool checkForCollision(Vector2 pos)//denna funktion fick jag hjälp med då den är ganska komplex och avancerad!
+        public bool checkForCollision(Vector2 pos)//denna funktion fick jag hjälp med då den är ganska komplex och avancerad!
         {
             pos.X += hitbox.X;
             pos.Y += hitbox.Y;
@@ -159,6 +160,8 @@ namespace NewKillingStory.Model
             bool tileSW = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
             bool tileSE = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)((pos.X + size.X) / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
 
+            //bool tileChangeWorld = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] == 8;
+
             bool outside = pos.X < 0 || pos.X + hitbox.Z > map.Width || pos.Y < 0 || pos.Y + hitbox.W > map.Height;
 
             if (tileNW || tileNE || tileSW || tileSE || outside)
@@ -167,6 +170,5 @@ namespace NewKillingStory.Model
             }
             return false;
         }
-
     }
 }

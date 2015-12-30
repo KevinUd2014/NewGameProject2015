@@ -148,7 +148,7 @@ namespace NewKillingStory
                     rain.Update(gameTime, graphics.GraphicsDevice);
 
                     IsMouseVisible = false;
-
+                   
                     //if (menuController.isClicked == false)
                     //    menuController.isClicked = true;
 

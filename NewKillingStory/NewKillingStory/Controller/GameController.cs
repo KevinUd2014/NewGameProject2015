@@ -24,7 +24,6 @@ namespace NewKillingStory.Controller
         ContentManager _content;
         public GameController()
         {
-
         }
 
         public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport, Camera camera, Texture2D enemyTexture, GraphicsDeviceManager graphics)
@@ -39,8 +38,9 @@ namespace NewKillingStory.Controller
             enemy = new Enemy(new Vector2(0,0), camera, graphics, enemyTexture);
             character = Content.Load<Texture2D>("imp");
             player.LoadContent(character);
-            
-            Enemy.SetTexture(Content.Load<Texture2D>("Bat"));
+            enemy.LoadContent(enemyTexture);
+
+            //Enemy.SetTexture(Content.Load<Texture2D>("Bat"));
             Flame.SetTexture(Content.Load<Texture2D>("flame_sprite"));
 
             Tiles.Content = Content;
@@ -66,7 +66,7 @@ namespace NewKillingStory.Controller
 
         }
         public void changeLevel1()
-        {
+        { 
             AnimatedSprites = new List<Model.AnimatedSprites>();
             map = new Map(camera);
             player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera);// start positionen för player!
@@ -113,7 +113,7 @@ namespace NewKillingStory.Controller
                 { 4,1,4,4,4,1,1,1,1,1,4,4,1,1},
                 { 4,1,4,1,1,1,1,1,1,1,4,4,1,1},
                 { 4,1,4,1,1,1,1,1,1,1,1,1,1,1},
-                { 4,1,4,1,1,1,1,1,1,1,1,1,1,1},
+                { 4,1,4,1,1,1,1,1,1,1,1,1,1,8},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,6,6},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -176,6 +176,7 @@ namespace NewKillingStory.Controller
             {
                 changeLevel3();
             }
+
             player.Update(gameTime);
             enemy.Update(gameTime);
             for (int i = AnimatedSprites.Count - 1; i >= 0; i--)

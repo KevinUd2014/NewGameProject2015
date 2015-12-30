@@ -43,13 +43,17 @@ namespace NewKillingStory.View
             enemyWidth = character.Width;
             enemyHeight = character.Height;
 
-            FramesPerSecond = 18;
-            AddAnimation(4, 0, 0, "Enemy", 30, 30);
+            FramesPerSecond = 14;
+            AddAnimation(4, 0, 0, "Enemy", 32, 30);
             //AddAnimation(4, 132, 0, "EnemyUp", 30, 30);
             //AddAnimation(4, 49, 0, "EnemyLeft", 30, 30);
             //AddAnimation(4, 95, 0, "EnemyRight", 30, 30);
             //AddAnimation(6, 0, 0, "Enemy", 32, 32);
             PlayAnimation("Enemy");
+        }
+        public void LoadContent(Texture2D character)
+        {
+            this.character = character;//laddar in charactern!
         }
         public override void Update(GameTime gameTime)
         {
@@ -78,16 +82,16 @@ namespace NewKillingStory.View
             PlayAnimation("Enemy");
             currentDirection = myDirection.none;
         }
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            foreach (Rectangle rectangle in enemies)
-            {
-                spriteBatch.Draw(character, rectangle, Color.White);
-            }
-        }
-        public static void SetTexture(Texture2D tex)
-        {
-            texture = tex;
-        }
+        //public void Draw(SpriteBatch spriteBatch)//  denna fungerar inte men måste ha denna om jag vill placera ut fiender random på mappen!// ändras i gamecontrollern också!
+        //{
+        //    foreach (Rectangle rectangle in enemies)
+        //    {
+        //        spriteBatch.Draw(character, rectangle, Color.White);
+        //    }
+        //}
+        //public static void SetTexture(Texture2D tex)//för random fiender på skärmen!
+        //{
+        //    texture = tex;
+        //}
     }
 }
