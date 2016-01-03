@@ -93,6 +93,7 @@ namespace NewKillingStory
             Texture2D enemyTexture = Content.Load<Texture2D>("Bat");
             Texture2D startMenuBackground = Content.Load<Texture2D>("KillerStory");
             Texture2D playButton = Content.Load<Texture2D>("playButton");
+            Texture2D instructionButton = Content.Load<Texture2D>("InstructionsButton");
             //character = Content.Load<Texture2D>("Fox");
 
             //pause saker
@@ -116,7 +117,7 @@ namespace NewKillingStory
             //menuView = new MenuView();
 
             //load all the classes and give them all the necessary parameters!
-            menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton);
+            menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton, instructionButton);
             gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics);
 
             menuController.setPosition(new Vector2(400, 400));// sätter positionen för knappen!
@@ -144,12 +145,20 @@ namespace NewKillingStory
                 case Gamestate.Menu:
                     IsMouseVisible = true;
                     menuController.Update((float)gameTime.ElapsedGameTime.TotalSeconds, mouse);
+                    //menuController.isInstructionClicked = false;
                     //player.Update(gameTime);
                     if (menuController.isClicked == true)
                     {
                         ScreenState = Gamestate.Play;
                         IsMouseVisible = true;
-                        menuController.isClicked = false;
+                        menuController.isClicked = false;  // har problem med vart jag ska sätta dessa för att dom ska bli bra menyerna buggar lite!
+                    }
+                    if (menuController.isInstructionClicked == true)
+                    {
+                        //menuController.isInstructionClicked = false;
+                        ScreenState = Gamestate.Instructions;
+                        IsMouseVisible = true;
+                        //menuController.isInstructionClicked = true; // denna finns i instruction gamestate!
                     }
                     break;
                 case Gamestate.Play:
@@ -208,7 +217,15 @@ namespace NewKillingStory
                     IsMouseVisible = true;
                     if (buttonBack.isClicked)
                     {
-                        ScreenState = Gamestate.Pause;
+                        if (menuController.isInstructionClicked == true)
+                        {
+                            ScreenState = Gamestate.Menu;
+                            menuController.isInstructionClicked = false;
+                        }
+                        else
+                        {
+                            ScreenState = Gamestate.Pause;
+                        }
                     }
                     buttonBack.Update(mouse);
 

@@ -10,24 +10,17 @@ namespace NewKillingStory.View
 {
     class Enemy : AnimatedSprites
     {
-        // Maximum amount of enemies to be shown at a time.
-        const int maxEnemies = 2;
+        const int maxEnemies = 2;// Maximum amount of enemies to be shown at a time.
 
-        // An instance of the Random object that will be used to calculate random coordinates to position the enemy.
-        Random random = new Random();
+        Random random = new Random();// An instance of the Random object that will be used to calculate random coordinates to position the enemy.
 
-        // A list that will store the rectangles containing the enemies.
-        List<Rectangle> enemies = new List<Rectangle>();
-
-        // Enemy texture values.
-        int enemyWidth, enemyHeight;
+        List<Rectangle> enemies = new List<Rectangle>();// lista med fiender
+        
+        int enemyWidth, enemyHeight;// fiende info
 
         GraphicsDeviceManager graphics;
-
-        private static Texture2D texture;
-
-        // Amount in seconds to wait between the creation of enemies.
-        const float enemyCreationTimer = 1.5f;
+        
+        const float enemyCreationTimer = 1.5f;//Hur länge en fiende ska vänta innan spawn igen
 
         // Elapsed time since the last creation of an enemy.
         double elapsedTime = 0;
@@ -71,7 +64,7 @@ namespace NewKillingStory.View
                 // Reset the elapsed time for new enemy
                 elapsedTime = 0;
             }
-
+            
             HandleEnenmy(gameTime);
 
             base.Update(gameTime);

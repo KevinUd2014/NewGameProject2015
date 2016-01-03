@@ -38,7 +38,7 @@ namespace NewKillingStory.View
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, float elapsedSeconds, Texture2D menuBackground, Texture2D Playbutton, Rectangle rectangle, Color color)
+        public void Draw(SpriteBatch spriteBatch, float elapsedSeconds, Texture2D menuBackground, Texture2D Playbutton, Rectangle rectangle, Color color, Texture2D InstructionButton, Rectangle instructionRectangle)
         {
 
 
@@ -56,6 +56,7 @@ namespace NewKillingStory.View
                     0f);
 
             spriteBatch.Draw(Playbutton, rectangle, color);
+            spriteBatch.Draw(InstructionButton, instructionRectangle, color);
             //spriteBatch.Draw(Playbutton,//texture
             //   null,
             //   rectangle,//rectangle
