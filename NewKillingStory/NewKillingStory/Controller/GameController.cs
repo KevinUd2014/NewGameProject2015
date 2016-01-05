@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -19,90 +20,70 @@ namespace NewKillingStory.Controller
         GraphicsDeviceManager _graphics;
         Texture2D _enemyTexture;
         Camera camera;
+        Texture2D enemyText;
         public List<AnimatedSprites> AnimatedSprites;
         Texture2D character;
         ContentManager _content;
+        SoundEffect backgroundMusic;
+        SoundEffectInstance soundEffectInstance;
+
+        public bool onFirstLevel;
+        public bool onSecondLevel;
+        public bool onThirdLevel;
+
+        GameController gameController;
+
         public GameController()
         {
         }
 
-        public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport, Camera camera, Texture2D enemyTexture, GraphicsDeviceManager graphics)
+        public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport, Camera camera, Texture2D enemyTexture, GraphicsDeviceManager graphics, SoundEffect _backgroundMusic, GameController _gameController)
         {
             _enemyTexture = enemyTexture;
             this.camera = camera;
             _graphics = graphics;
+            backgroundMusic = _backgroundMusic;
             _content = Content;
-            AnimatedSprites = new List<Model.AnimatedSprites>(); 
-            map = new Map(camera);
-            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera);// start positionen för player!
-            enemy = new Enemy(new Vector2(0,0), camera, graphics, enemyTexture);
+            gameController = _gameController;
+            //AnimatedSprites = new List<Model.AnimatedSprites>(); 
+            //map = new Map(camera);
+            //player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera);// start positionen för player!
+            //enemy = new Enemy(new Vector2(0,0), camera, graphics, enemyTexture);
             character = Content.Load<Texture2D>("imp");
-            player.LoadContent(character);
-            enemy.LoadContent(enemyTexture);
+            //player.LoadContent(character);
+            //enemy.LoadContent(enemyTexture);
 
             //Enemy.SetTexture(Content.Load<Texture2D>("Bat"));
             Flame.SetTexture(Content.Load<Texture2D>("flame_sprite"));
+            //backgroundMusic.Play(0.1f, 0.0f, 0.0f);
+            //Tiles.Content = Content;
+            soundEffectInstance = backgroundMusic.CreateInstance();
 
-            Tiles.Content = Content;
+            onFirstLevel = false;
+            onSecondLevel = false;
+            onThirdLevel = false;
 
+            StartGame();
             Level1();
 
-            //map.Generate(new int[,]{//skapar här ett till lager med nya tiles t.ex. så kan man lägga in träd i denna vilket kanske gör det lättare att ksapa kollisioner med dom!
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,3,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,4,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            //}, 64);//med 64 så menar jag 64 pixlar!
-
         }
-        public void changeLevel1()
+        public void StartGame()
         { 
             AnimatedSprites = new List<Model.AnimatedSprites>();
             map = new Map(camera);
-            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera);// start positionen för player!
+            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera, gameController);// start positionen för player!
             enemy = new Enemy(new Vector2(0, 0), camera, _graphics, _enemyTexture);
             player.LoadContent(character);
+            enemy.LoadContent(_enemyTexture);
             //Flame.SetTexture(_content.Load<Texture2D>("flame_sprite"));
 
-            Tiles.Content = _content;
+            soundEffectInstance.Play();
 
-            Level1();
-        }
-        public void changeLevel2()
-        {
-            AnimatedSprites = new List<Model.AnimatedSprites>();
-            map = new Map(camera);
-            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera);// start positionen för player!
-            enemy = new Enemy(new Vector2(0, 0), camera, _graphics, _enemyTexture);
-            player.LoadContent(character);
-            //Flame.SetTexture(_content.Load<Texture2D>("flame_sprite"));
+            soundEffectInstance.Volume = 0.1f;
+            soundEffectInstance.Pan = -0.0f;
+            soundEffectInstance.Pitch = 0.0f;
 
             Tiles.Content = _content;
-
-            Level2();
-        }
-        public void changeLevel3()
-        {
-            AnimatedSprites = new List<Model.AnimatedSprites>();
-            map = new Map(camera);
-            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera);// start positionen för player!
-            enemy = new Enemy(new Vector2(0, 0), camera, _graphics, _enemyTexture);
-            player.LoadContent(character);
-            //Flame.SetTexture(_content.Load<Texture2D>("flame_sprite"));
-
-            Tiles.Content = _content;
-
-            Level3();
         }
         public void Level1()
         {
@@ -113,7 +94,7 @@ namespace NewKillingStory.Controller
                 { 4,1,4,4,4,1,1,1,1,1,4,4,1,1},
                 { 4,1,4,1,1,1,1,1,1,1,4,4,1,1},
                 { 4,1,4,1,1,1,1,1,1,1,1,1,1,1},
-                { 4,1,4,1,1,1,1,1,1,1,1,1,1,8},
+                { 4,1,4,1,1,1,1,8,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,6,6},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -122,6 +103,7 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             }, 64);//med 64 så menar jag 64 pixlar!
+            onFirstLevel = true;
         }
         public void Level2()
         {
@@ -133,7 +115,7 @@ namespace NewKillingStory.Controller
                 { 4,1,4,1,1,1,1,1,1,1,4,4,1,1},
                 { 4,1,4,1,1,4,1,1,1,1,1,1,1,1},
                 { 4,1,4,1,1,4,1,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,4,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,4,1,1,8,1,1,1,1,1},
                 { 1,1,1,1,1,4,1,1,1,1,1,1,6,6},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -141,6 +123,7 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             }, 64);//med 64 så menar jag 64 pixlar!
+            onSecondLevel = true;
         }
         public void Level3()
         {
@@ -151,7 +134,7 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,6,1,8,1,1,1,1,1},
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
@@ -160,21 +143,25 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             }, 64);//med 64 så menar jag 64 pixlar!
+            onThirdLevel = true;
         }
 
         public void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.F1))
             {
-                changeLevel1();
+                StartGame();
+                Level1();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F2))
             {
-                changeLevel2();
+                StartGame();
+                Level2();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F3))
             {
-                changeLevel3();
+                StartGame();
+                Level3();
             }
 
             player.Update(gameTime);

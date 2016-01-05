@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NewKillingStory.Controller;
@@ -26,6 +27,7 @@ namespace NewKillingStory
         //pause funktionen
         Texture2D pauseTexture;
         Rectangle pausedRectangle;
+        SoundEffect backgroundMusic;
         Texture2D pauseInstructions;
         Rectangle pausedRectangleInstruction;
         PauseButton buttonPlay, buttonQuit, buttonMainMenu, buttonInstruction, buttonBack;
@@ -88,6 +90,9 @@ namespace NewKillingStory
             //snow = new ParticleGenerator(Content.Load<Texture2D>("Snowflake"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
             rain = new ParticleGenerator(Content.Load<Texture2D>("Rain"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
 
+            backgroundMusic = Content.Load<SoundEffect>("sleeping_beast_4"); // ge cred ... //http://www.opsound.org/artist/dhalius/
+
+            
 
             //Load all the textures here and sound as well!
             Texture2D enemyTexture = Content.Load<Texture2D>("Bat");
@@ -118,7 +123,7 @@ namespace NewKillingStory
 
             //load all the classes and give them all the necessary parameters!
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton, instructionButton);
-            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics);
+            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics, backgroundMusic, gameController);
 
             menuController.setPosition(new Vector2(400, 400));// sätter positionen för knappen!
         }
@@ -145,6 +150,7 @@ namespace NewKillingStory
                 case Gamestate.Menu:
                     IsMouseVisible = true;
                     menuController.Update((float)gameTime.ElapsedGameTime.TotalSeconds, mouse);
+                    
                     //menuController.isInstructionClicked = false;
                     //player.Update(gameTime);
                     if (menuController.isClicked == true)

@@ -157,6 +157,7 @@
     <Content Include="Content\siren.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\sleeping_beast_4.wav" />
     <Content Include="Content\Snowflake.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

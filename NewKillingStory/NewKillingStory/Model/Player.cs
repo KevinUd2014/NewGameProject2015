@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using NewKillingStory.View;
 using NewKillingStory.Controller;
+using System.Threading;
 
 namespace NewKillingStory.Model
 {
@@ -26,16 +27,17 @@ namespace NewKillingStory.Model
 
         //Texture2D character;
         //bool attacking = false;
+        GameController gameController;
 
         /// The constructor of the Player class
-        public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera) : base(position, camera)//this position is handled through the base class
+        public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController) : base(position, camera)//this position is handled through the base class
         {
             this.camera = camera;
             this.map = map;
             this.animatedSprites = animatedSprites;
 
             hitbox = new Vector4(15, 13, 49, 64);
-
+            gameController = _gameController;
             FramesPerSecond = 6;
 
             //Adds all the players animations
@@ -147,6 +149,7 @@ namespace NewKillingStory.Model
         {
             animatedSprites.Add(new Flame(position,V, camera));
         }
+      
 
         public bool checkForCollision(Vector2 pos)//denna funktion fick jag hjälp med då den är ganska komplex och avancerad!
         {
@@ -160,8 +163,30 @@ namespace NewKillingStory.Model
             bool tileSW = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
             bool tileSE = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)((pos.X + size.X) / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
 
-            //bool tileChangeWorld = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] == 8;
+            bool tileChangeWorld = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] == 8;
 
+            if (tileChangeWorld && gameController.onFirstLevel == true && gameController.onSecondLevel == false && gameController.onThirdLevel == false)
+            {
+                gameController.StartGame();
+                gameController.Level2();
+                gameController.onFirstLevel = false;
+                tileChangeWorld = false;             
+            }
+            if (tileChangeWorld && gameController.onSecondLevel == true && gameController.onFirstLevel == false && gameController.onThirdLevel == false)
+            {
+                gameController.StartGame();
+                gameController.Level3();
+                tileChangeWorld = false;
+            }
+            if (tileChangeWorld && gameController.onThirdLevel == true)// && gameController.onFirstLevel == false && gameController.onSecondLevel == false)// && gameController.onFirstLevel == false)
+            {
+                gameController.StartGame();
+                gameController.Level1();
+                gameController.onThirdLevel = false;
+               
+                gameController.onSecondLevel = false;
+                tileChangeWorld = false;
+            }
             bool outside = pos.X < 0 || pos.X + hitbox.Z > map.Width || pos.Y < 0 || pos.Y + hitbox.W > map.Height;
 
             if (tileNW || tileNE || tileSW || tileSE || outside)
