@@ -26,20 +26,16 @@ namespace NewKillingStory.Model
         Camera camera;
         private List<AnimatedSprites> animatedSprites;
 
-        SoundEffect fireballSound;
-
         //Texture2D character;
         //bool attacking = false;
         GameController gameController;
 
         /// The constructor of the Player class
-        public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController, SoundEffect _fireballSound) : base(position, camera)//this position is handled through the base class
+        public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController) : base(position, camera)//this position is handled through the base class
         {
             this.camera = camera;
             this.map = map;
             this.animatedSprites = animatedSprites;
-
-            fireballSound = _fireballSound;
 
             hitbox = new Vector4(15, 13, 49, 64);
             gameController = _gameController;
@@ -73,7 +69,7 @@ namespace NewKillingStory.Model
             
             base.Update(gameTime);
         }
-        private void HandleKeyboardInput(KeyboardState keyState, GameTime gameTime)
+        public void HandleKeyboardInput(KeyboardState keyState, GameTime gameTime)
         {
             if (keyState.IsKeyDown(Keys.W) && !checkForCollision(position + new Vector2(0, -2.5f)))
             {
@@ -110,11 +106,10 @@ namespace NewKillingStory.Model
                 currentDirection = myDirection.up;
                 if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
                 {
-                    fireballSound.Play();
-                    attack(new Vector2(0,-5));
+                    attack(new Vector2(0, -5));
                     lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
                 }
-                
+
             }
             if (keyState.IsKeyDown(Keys.Down))
             {
@@ -150,6 +145,21 @@ namespace NewKillingStory.Model
             }
             currentDirection = myDirection.none;
         }
+        public void FireUp(KeyboardState keyState, GameTime gameTime)
+        {
+            if (keyState.IsKeyDown(Keys.Up)) //&& !checkForCollision(position + new Vector2(0, 0)))
+            {
+                PlayAnimation("Up");
+                currentDirection = myDirection.up;
+                if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
+                {
+                    attack(new Vector2(0, -5));
+                    lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
+                }
+            }
+
+            currentDirection = myDirection.none;
+        }
 
         private void attack(Vector2 V)
         {
@@ -171,7 +181,7 @@ namespace NewKillingStory.Model
 
             bool tileChangeWorld = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] == 8;
 
-            if (tileChangeWorld && gameController.onFirstLevel == true && gameController.onSecondLevel == false && gameController.onThirdLevel == false)
+            if (tileChangeWorld && gameController.onFirstLevel == true )//&& gameController.onSecondLevel == false && gameController.onThirdLevel == false)
             {
                 gameController.StartGame();
                 gameController.Level2();
@@ -184,12 +194,11 @@ namespace NewKillingStory.Model
                 gameController.Level3();
                 tileChangeWorld = false;
             }
-            if (tileChangeWorld && gameController.onThirdLevel == true)// && gameController.onFirstLevel == false && gameController.onSecondLevel == false)// && gameController.onFirstLevel == false)
+            if (tileChangeWorld && gameController.onThirdLevel == true)
             {
                 gameController.StartGame();
                 gameController.Level1();
                 gameController.onThirdLevel = false;
-               
                 gameController.onSecondLevel = false;
                 tileChangeWorld = false;
             }

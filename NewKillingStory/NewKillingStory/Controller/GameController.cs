@@ -76,7 +76,7 @@ namespace NewKillingStory.Controller
         { 
             AnimatedSprites = new List<Model.AnimatedSprites>();
             map = new Map(camera);
-            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera, gameController, fireballSound);// start positionen för player!
+            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera, gameController);// start positionen för player!
             enemy = new Enemy(new Vector2(0, 0), camera, _graphics, _enemyTexture);
             player.LoadContent(character);
             enemy.LoadContent(_enemyTexture);
@@ -153,11 +153,10 @@ namespace NewKillingStory.Controller
 
         public void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.F1))
-            {
-                StartGame();
-                Level1();
-            }
+            //if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            //{
+            //    fireballSound.Play();
+            //}
             if (Keyboard.GetState().IsKeyDown(Keys.F2))
             {
                 StartGame();
