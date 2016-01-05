@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using NewKillingStory.View;
 using NewKillingStory.Controller;
 using System.Threading;
+using Microsoft.Xna.Framework.Audio;
 
 namespace NewKillingStory.Model
 {
@@ -25,16 +26,20 @@ namespace NewKillingStory.Model
         Camera camera;
         private List<AnimatedSprites> animatedSprites;
 
+        SoundEffect fireballSound;
+
         //Texture2D character;
         //bool attacking = false;
         GameController gameController;
 
         /// The constructor of the Player class
-        public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController) : base(position, camera)//this position is handled through the base class
+        public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController, SoundEffect _fireballSound) : base(position, camera)//this position is handled through the base class
         {
             this.camera = camera;
             this.map = map;
             this.animatedSprites = animatedSprites;
+
+            fireballSound = _fireballSound;
 
             hitbox = new Vector4(15, 13, 49, 64);
             gameController = _gameController;
@@ -105,6 +110,7 @@ namespace NewKillingStory.Model
                 currentDirection = myDirection.up;
                 if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
                 {
+                    fireballSound.Play();
                     attack(new Vector2(0,-5));
                     lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
                 }

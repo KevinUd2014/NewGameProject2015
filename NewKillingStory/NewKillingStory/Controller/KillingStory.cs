@@ -15,7 +15,7 @@ namespace NewKillingStory
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        MouseState lastMouseState;
         Enemy enemy;
         
         GameController gameController;
@@ -26,8 +26,12 @@ namespace NewKillingStory
 
         //pause funktionen
         Texture2D pauseTexture;
+
         Rectangle pausedRectangle;
+
         SoundEffect backgroundMusic;
+        SoundEffect fireballSound;
+
         Texture2D pauseInstructions;
         Rectangle pausedRectangleInstruction;
         PauseButton buttonPlay, buttonQuit, buttonMainMenu, buttonInstruction, buttonBack;
@@ -92,8 +96,8 @@ namespace NewKillingStory
 
             backgroundMusic = Content.Load<SoundEffect>("sleeping_beast_4"); // ge cred ... //http://www.opsound.org/artist/dhalius/
 
+            fireballSound = Content.Load<SoundEffect>("fireballShot");// när spelaren skjuter så kommer ljud!
             
-
             //Load all the textures here and sound as well!
             Texture2D enemyTexture = Content.Load<Texture2D>("Bat");
             Texture2D startMenuBackground = Content.Load<Texture2D>("KillerStory");
@@ -123,7 +127,7 @@ namespace NewKillingStory
 
             //load all the classes and give them all the necessary parameters!
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton, instructionButton);
-            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics, backgroundMusic, gameController);
+            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics, backgroundMusic, gameController, fireballSound);
 
             menuController.setPosition(new Vector2(400, 400));// sätter positionen för knappen!
         }
@@ -145,21 +149,22 @@ namespace NewKillingStory
         protected override void Update(GameTime gameTime)
         {
             MouseState mouse = Mouse.GetState();
+            lastMouseState = mouse;
             switch (ScreenState)//creats a Switch with all the diffrent screens!
             {
                 case Gamestate.Menu:
                     IsMouseVisible = true;
                     menuController.Update((float)gameTime.ElapsedGameTime.TotalSeconds, mouse);
-                    
+
                     //menuController.isInstructionClicked = false;
                     //player.Update(gameTime);
-                    if (menuController.isClicked == true)
+                    if (menuController.isClicked == true && lastMouseState.LeftButton == ButtonState.Released) 
                     {
                         ScreenState = Gamestate.Play;
                         IsMouseVisible = true;
                         menuController.isClicked = false;  // har problem med vart jag ska sätta dessa för att dom ska bli bra menyerna buggar lite!
                     }
-                    if (menuController.isInstructionClicked == true)
+                    if (menuController.isInstructionClicked == true && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         //menuController.isInstructionClicked = false;
                         ScreenState = Gamestate.Instructions;
@@ -170,8 +175,7 @@ namespace NewKillingStory
                 case Gamestate.Play:
                     //enemy.Update(gameTime);
                     //snow.Update(gameTime, graphics.GraphicsDevice);
-                    //rain.Update(gameTime, graphics.GraphicsDevice);
-
+                    rain.Update(gameTime, graphics.GraphicsDevice);
                     IsMouseVisible = false;
                    
                     //if (menuController.isClicked == false)
@@ -190,24 +194,19 @@ namespace NewKillingStory
                 case Gamestate.Pause:
                     IsMouseVisible = true;
                     
-                    if (buttonPlay.isClicked)
+                    if (buttonPlay.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         ScreenState = Gamestate.Play;
-                        //gameController.restarLevel();
-                        //gameController.Update(gameTime);
-                        //ResetElapsedTime();
                     }
-                    if (buttonQuit.isClicked)
+                    if (buttonQuit.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                         Exit();
-                    if (buttonMainMenu.isClicked)
+                    if (buttonMainMenu.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         ScreenState = Gamestate.Menu;
                         buttonPlay.isClicked = true;//vet inte om denna behövs!
-
                         //menuController.isClicked = false;
-                        
                     }
-                    if(buttonInstruction.isClicked)
+                    if(buttonInstruction.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         ScreenState = Gamestate.Instructions;
                     }
@@ -264,7 +263,7 @@ namespace NewKillingStory
                     //enemy.Draw(spriteBatch);
 
                     //snow.Draw(spriteBatch);//snöpartiklarna!
-                    //rain.Draw(spriteBatch);//regnpartiklarna!
+                    rain.Draw(spriteBatch);//regnpartiklarna!
                     break;
                 case Gamestate.Pause:
 

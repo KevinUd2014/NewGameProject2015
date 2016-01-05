@@ -24,6 +24,8 @@ namespace NewKillingStory.Controller
         public List<AnimatedSprites> AnimatedSprites;
         Texture2D character;
         ContentManager _content;
+
+        SoundEffect fireballSound;
         SoundEffect backgroundMusic;
         SoundEffectInstance soundEffectInstance;
 
@@ -37,12 +39,15 @@ namespace NewKillingStory.Controller
         {
         }
 
-        public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport, Camera camera, Texture2D enemyTexture, GraphicsDeviceManager graphics, SoundEffect _backgroundMusic, GameController _gameController)
+        public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport, Camera camera, Texture2D enemyTexture, GraphicsDeviceManager graphics, SoundEffect _backgroundMusic, GameController _gameController, SoundEffect _fireballSound)
         {
             _enemyTexture = enemyTexture;
             this.camera = camera;
             _graphics = graphics;
+
             backgroundMusic = _backgroundMusic;
+            fireballSound = _fireballSound;
+
             _content = Content;
             gameController = _gameController;
             //AnimatedSprites = new List<Model.AnimatedSprites>(); 
@@ -71,7 +76,7 @@ namespace NewKillingStory.Controller
         { 
             AnimatedSprites = new List<Model.AnimatedSprites>();
             map = new Map(camera);
-            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera, gameController);// start positionen för player!
+            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera, gameController, fireballSound);// start positionen för player!
             enemy = new Enemy(new Vector2(0, 0), camera, _graphics, _enemyTexture);
             player.LoadContent(character);
             enemy.LoadContent(_enemyTexture);
