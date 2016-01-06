@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace NewKillingStory.Controller
 {
@@ -29,6 +30,8 @@ namespace NewKillingStory.Controller
         SoundEffect backgroundMusic;
         SoundEffectInstance soundEffectInstance;
 
+        SpriteFont spritefont;
+
         public bool onFirstLevel;
         public bool onSecondLevel;
         public bool onThirdLevel;
@@ -39,11 +42,16 @@ namespace NewKillingStory.Controller
         {
         }
 
-        public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport, Camera camera, Texture2D enemyTexture, GraphicsDeviceManager graphics, SoundEffect _backgroundMusic, GameController _gameController, SoundEffect _fireballSound)
+        public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport, 
+            Camera camera, Texture2D enemyTexture, GraphicsDeviceManager graphics, 
+            SoundEffect _backgroundMusic, GameController _gameController, 
+            SoundEffect _fireballSound, SpriteFont _spritefont)
         {
             _enemyTexture = enemyTexture;
             this.camera = camera;
             _graphics = graphics;
+
+            spritefont = _spritefont;
 
             backgroundMusic = _backgroundMusic;
             fireballSound = _fireballSound;
@@ -70,14 +78,13 @@ namespace NewKillingStory.Controller
 
             StartGame();
             Level1();
-
         }
         public void StartGame()
         { 
             AnimatedSprites = new List<Model.AnimatedSprites>();
             map = new Map(camera);
-            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera, gameController);// start positionen för player!
-            enemy = new Enemy(new Vector2(0, 0), camera, _graphics, _enemyTexture);
+            player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera, gameController, fireballSound);// start positionen för player!
+            enemy = new Enemy(new Vector2(0, 0), camera, _graphics, _enemyTexture, player);
             player.LoadContent(character);
             enemy.LoadContent(_enemyTexture);
             //Flame.SetTexture(_content.Load<Texture2D>("flame_sprite"));
@@ -152,22 +159,7 @@ namespace NewKillingStory.Controller
         }
 
         public void Update(GameTime gameTime)
-        {
-            //if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            //{
-            //    fireballSound.Play();
-            //}
-            if (Keyboard.GetState().IsKeyDown(Keys.F2))
-            {
-                StartGame();
-                Level2();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.F3))
-            {
-                StartGame();
-                Level3();
-            }
-
+        {   
             player.Update(gameTime);
             enemy.Update(gameTime);
             for (int i = AnimatedSprites.Count - 1; i >= 0; i--)
@@ -178,12 +170,24 @@ namespace NewKillingStory.Controller
                     AnimatedSprites.RemoveAt(i);
             }
         }
+        public void sleep()
+        {
+            Thread.Sleep(10);
+        }
 
         public void Draw(SpriteBatch spriteBatch)//, Camera camera)
         {
-            map.Draw(spriteBatch);//, camera);
+            map.Draw(spriteBatch);
             player.Draw(spriteBatch);
             enemy.Draw(spriteBatch);
+
+            if(onFirstLevel == true)
+                spriteBatch.DrawString(spritefont, "First Level", new Vector2(10, 790), Color.Black);
+            if (onSecondLevel == true)
+                spriteBatch.DrawString(spritefont, "Second Level", new Vector2(10, 790), Color.Black);
+            if (onThirdLevel == true)
+                spriteBatch.DrawString(spritefont, "Third Level", new Vector2(10, 790), Color.Black);
+
 
             for (int i = AnimatedSprites.Count - 1; i >= 0; i--)
             {

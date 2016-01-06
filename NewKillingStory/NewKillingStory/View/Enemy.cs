@@ -10,6 +10,7 @@ namespace NewKillingStory.View
 {
     class Enemy : AnimatedSprites
     {
+        float enemySpeed = 50;
         const int maxEnemies = 2;// Maximum amount of enemies to be shown at a time.
 
         Random random = new Random();// An instance of the Random object that will be used to calculate random coordinates to position the enemy.
@@ -19,19 +20,24 @@ namespace NewKillingStory.View
         int enemyWidth, enemyHeight;// fiende info
 
         GraphicsDeviceManager graphics;
+
+        Vector2 veclocity = Vector2.Zero;
+        Player player;
         
         const float enemyCreationTimer = 1.5f;//Hur länge en fiende ska vänta innan spawn igen
 
         // Elapsed time since the last creation of an enemy.
         double elapsedTime = 0;
 
-        public Enemy(Vector2 position, Camera camera, GraphicsDeviceManager graphics, Texture2D texture) : base(position, camera)
+        public Enemy(Vector2 position, Camera camera, GraphicsDeviceManager graphics, Texture2D texture, Player _player) : base(position, camera)
         {
             //velocity = new Vector2(2,2);//speed later
 
             this.graphics = graphics;
 
             character = texture;
+
+            player = _player;
 
             enemyWidth = character.Width;
             enemyHeight = character.Height;
@@ -46,12 +52,22 @@ namespace NewKillingStory.View
         }
         public void LoadContent(Texture2D character)
         {
-            this.character = character;//laddar in charactern!
+            this.character = character;//laddar in character!
         }
         public override void Update(GameTime gameTime)
         {
             // Calculates the amount of time, in seconds, that passed between the previous call to the Update method and this one.
-            elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+            //elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+            //veclocity += new Vector2(0, 1.5f);
+
+            direction = Vector2.Zero; //Makes the player stop moving when no key is pressed
+
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;//Calculates how many seconds since last Update//Is not based on fps!
+
+            direction *= enemySpeed;//Applies the speed speed
+
+            position += (direction * deltaTime);//Makes the movement framerate independent by multiplying with deltaTime
+
             // Creates a new enemy everytime the current amount of enemies is less than the max allowed and the minimum amount of time between creations has been reached.
             if (elapsedTime >= enemyCreationTimer && enemies.Count < maxEnemies)
             {
@@ -64,16 +80,16 @@ namespace NewKillingStory.View
                 // Reset the elapsed time for new enemy
                 elapsedTime = 0;
             }
-            
+            //Console.WriteLine(position);
             HandleEnenmy(gameTime);
 
             base.Update(gameTime);
         }
         public void HandleEnenmy(GameTime gameTime)
         {
-            //direction += new Vector2(0, -1.5f);
+            direction += new Vector2(0, -1.5f);
             PlayAnimation("Enemy");
-            currentDirection = myDirection.none;
+            currentDirection = myDirection.down;
         }
         //public void Draw(SpriteBatch spriteBatch)//  denna fungerar inte men måste ha denna om jag vill placera ut fiender random på mappen!// ändras i gamecontrollern också!
         //{

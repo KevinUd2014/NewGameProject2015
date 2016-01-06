@@ -25,19 +25,21 @@ namespace NewKillingStory.Model
         private float fireRate = 0.2f;
         Camera camera;
         private List<AnimatedSprites> animatedSprites;
-
+        SoundEffect fireballSound;
         //Texture2D character;
         //bool attacking = false;
         GameController gameController;
 
         /// The constructor of the Player class
-        public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController) : base(position, camera)//this position is handled through the base class
+        public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController, SoundEffect _fireballSound) : base(position, camera)//this position is handled through the base class
         {
             this.camera = camera;
             this.map = map;
             this.animatedSprites = animatedSprites;
 
-            hitbox = new Vector4(15, 13, 49, 64);
+            fireballSound = _fireballSound;
+
+            hitbox = new Vector4(15, 40, 49, 66); // bästa raden gällande karaktären!
             gameController = _gameController;
             FramesPerSecond = 6;
 
@@ -106,6 +108,7 @@ namespace NewKillingStory.Model
                 currentDirection = myDirection.up;
                 if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
                 {
+                    fireballSound.Play();
                     attack(new Vector2(0, -5));
                     lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
                 }
@@ -117,6 +120,7 @@ namespace NewKillingStory.Model
                 currentDirection = myDirection.down;
                 if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
                 {
+                    fireballSound.Play();
                     attack(new Vector2(0, 5));
                     lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
                 }
@@ -128,6 +132,7 @@ namespace NewKillingStory.Model
                 currentDirection = myDirection.right;
                 if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
                 {
+                    fireballSound.Play();
                     attack(new Vector2(5, 0));
                     lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
                 }
@@ -139,25 +144,11 @@ namespace NewKillingStory.Model
                 currentDirection = myDirection.left;
                 if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
                 {
+                    fireballSound.Play();
                     attack(new Vector2(-5, 0));
                     lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
                 }
             }
-            currentDirection = myDirection.none;
-        }
-        public void FireUp(KeyboardState keyState, GameTime gameTime)
-        {
-            if (keyState.IsKeyDown(Keys.Up)) //&& !checkForCollision(position + new Vector2(0, 0)))
-            {
-                PlayAnimation("Up");
-                currentDirection = myDirection.up;
-                if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
-                {
-                    attack(new Vector2(0, -5));
-                    lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
-                }
-            }
-
             currentDirection = myDirection.none;
         }
 
@@ -192,6 +183,7 @@ namespace NewKillingStory.Model
             {
                 gameController.StartGame();
                 gameController.Level3();
+                gameController.onSecondLevel = false;
                 tileChangeWorld = false;
             }
             if (tileChangeWorld && gameController.onThirdLevel == true)

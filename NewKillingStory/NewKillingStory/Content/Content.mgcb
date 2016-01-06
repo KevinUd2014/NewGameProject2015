@@ -25,3 +25,9 @@
 /processorParam:Quality=Best
 /build:fireballShot.wav
 
+#begin NewSpriteFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:NewSpriteFont.spritefont
+

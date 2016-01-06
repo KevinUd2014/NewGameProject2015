@@ -31,7 +31,7 @@ namespace NewKillingStory
 
         SoundEffect backgroundMusic;
         SoundEffect fireballSound;
-
+        SpriteFont spritefont;
         Texture2D pauseInstructions;
         Rectangle pausedRectangleInstruction;
         PauseButton buttonPlay, buttonQuit, buttonMainMenu, buttonInstruction, buttonBack;
@@ -52,7 +52,7 @@ namespace NewKillingStory
             graphics = new GraphicsDeviceManager(this);
 
             //Puts the size of the window!
-            graphics.PreferredBackBufferHeight =840;
+            graphics.PreferredBackBufferHeight =840;//840
             graphics.PreferredBackBufferWidth = 840;
             
             Content.RootDirectory = "Content";
@@ -97,7 +97,7 @@ namespace NewKillingStory
             backgroundMusic = Content.Load<SoundEffect>("sleeping_beast_4"); // ge cred ... //http://www.opsound.org/artist/dhalius/
 
             fireballSound = Content.Load<SoundEffect>("fireballShot");// när spelaren skjuter så kommer ljud!
-            
+            spritefont = Content.Load<SpriteFont>("NewSpriteFont");
             //Load all the textures here and sound as well!
             Texture2D enemyTexture = Content.Load<Texture2D>("Bat");
             Texture2D startMenuBackground = Content.Load<Texture2D>("KillerStory");
@@ -127,7 +127,7 @@ namespace NewKillingStory
 
             //load all the classes and give them all the necessary parameters!
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton, instructionButton);
-            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics, backgroundMusic, gameController, fireballSound);
+            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics, backgroundMusic, gameController, fireballSound, spritefont);
 
             menuController.setPosition(new Vector2(400, 400));// sätter positionen för knappen!
         }
