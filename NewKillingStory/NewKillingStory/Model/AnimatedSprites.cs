@@ -104,15 +104,19 @@ namespace NewKillingStory.Model
             }
         }
         ///// Draws the sprite on the screen
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, AnimatedSprites animatedSprite = null)
         {
+            if (animatedSprite is Enemy)
+            {
+                position = (animatedSprite as Enemy).GetPosition();
+            }
             spriteBatch.Draw(character,
-                position,
+                position,//position,
                 animations[currentAnimation][frameIndex],
                 Color.White,
                 0f,//rotation
                 Vector2.Zero,
-                camera.getScaleForView(character.Width*4),
+                camera.getScaleForView(character.Width * 4),
                 SpriteEffects.None,
                 0f);
         }

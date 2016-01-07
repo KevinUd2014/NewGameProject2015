@@ -27,6 +27,9 @@ namespace NewKillingStory
         //pause funktionen
         Texture2D pauseTexture;
 
+        Texture2D gameOverScreen;
+        Rectangle gameOverRectangle;
+
         Rectangle pausedRectangle;
 
         SoundEffect backgroundMusic;
@@ -106,6 +109,9 @@ namespace NewKillingStory
             //character = Content.Load<Texture2D>("Fox");
 
             //pause saker
+            gameOverScreen = Content.Load<Texture2D>("GameOverScreen");
+            gameOverRectangle = new Rectangle(0, 0, gameOverScreen.Width, gameOverScreen.Height);
+
             pauseTexture = Content.Load<Texture2D>("PauseMenu");
             pausedRectangle = new Rectangle(0, 0, pauseTexture.Width, pauseTexture.Height);
 
@@ -237,6 +243,13 @@ namespace NewKillingStory
                     break;
                 case Gamestate.GameOver:
 
+                    KeyboardState Keystate = Keyboard.GetState();
+
+                    if (Keystate.IsKeyDown(Keys.Enter))
+                    {
+                        ScreenState = Gamestate.Menu;
+                    }
+
                     break;
             }
             // TODO: Add your update logic here
@@ -280,7 +293,9 @@ namespace NewKillingStory
                     buttonBack.Draw(spriteBatch);
                     break;
                 case Gamestate.GameOver:
+                    spriteBatch.Draw(gameOverScreen, gameOverRectangle, Color.White);
 
+                    spriteBatch.DrawString(spritefont, "Press Enter for main menu", new Vector2(400, 400), Color.White);
                     break;
             }
             spriteBatch.End();

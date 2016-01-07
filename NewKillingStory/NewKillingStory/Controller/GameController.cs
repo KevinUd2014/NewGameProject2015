@@ -29,6 +29,7 @@ namespace NewKillingStory.Controller
         SoundEffect fireballSound;
         SoundEffect backgroundMusic;
         SoundEffectInstance soundEffectInstance;
+        List<Enemy> enemyList = new List<Enemy>();
 
         SpriteFont spritefont;
 
@@ -80,11 +81,17 @@ namespace NewKillingStory.Controller
             Level1();
         }
         public void StartGame()
-        { 
+        {
+            enemyList.Clear();
             AnimatedSprites = new List<Model.AnimatedSprites>();
             map = new Map(camera);
             player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera, gameController, fireballSound);// start positionen för player!
-            enemy = new Enemy(new Vector2(0, 0), camera, _graphics, _enemyTexture, player);
+            enemy = new Enemy(new Vector2(300, 0), camera, _graphics, _enemyTexture, player);
+            enemyList.Add(enemy);
+           // enemyList.Add(new Enemy(new Vector2(300, 0), camera, _graphics, _enemyTexture, player));
+            enemyList.Add(new Enemy(new Vector2(100, 0), camera, _graphics, _enemyTexture, player));
+           // enemyList.Add(new Enemy(new Vector2(200, 0), camera, _graphics, _enemyTexture, player));
+
             player.LoadContent(character);
             enemy.LoadContent(_enemyTexture);
             //Flame.SetTexture(_content.Load<Texture2D>("flame_sprite"));
@@ -161,7 +168,10 @@ namespace NewKillingStory.Controller
         public void Update(GameTime gameTime)
         {   
             player.Update(gameTime);
-            enemy.Update(gameTime);
+            foreach (Enemy enemy in enemyList)
+            {
+               enemy.Update(gameTime);
+            }
             for (int i = AnimatedSprites.Count - 1; i >= 0; i--)
             {
                 if (AnimatedSprites[i].Alive)
@@ -170,21 +180,24 @@ namespace NewKillingStory.Controller
                     AnimatedSprites.RemoveAt(i);
             }
         }
-        public void sleep()
-        {
-            Thread.Sleep(10);
-        }
-
         public void Draw(SpriteBatch spriteBatch)//, Camera camera)
         {
             map.Draw(spriteBatch);
-            player.Draw(spriteBatch);
-            enemy.Draw(spriteBatch);
+            player.Draw(spriteBatch, player);
 
-            if(onFirstLevel == true)
+            foreach (Enemy enemy in enemyList)
+            {
+                enemy.Draw(spriteBatch, enemy);
+            }
+
+            if (onFirstLevel == true)
+            {
                 spriteBatch.DrawString(spritefont, "First Level", new Vector2(10, 790), Color.Black);
+            }
             if (onSecondLevel == true)
+            {
                 spriteBatch.DrawString(spritefont, "Second Level", new Vector2(10, 790), Color.Black);
+            }
             if (onThirdLevel == true)
                 spriteBatch.DrawString(spritefont, "Third Level", new Vector2(10, 790), Color.Black);
 

@@ -29,10 +29,12 @@ namespace NewKillingStory.Model
         //Texture2D character;
         //bool attacking = false;
         GameController gameController;
+       // Vector2 position;
 
         /// The constructor of the Player class
         public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController, SoundEffect _fireballSound) : base(position, camera)//this position is handled through the base class
         {
+            this.position = position;
             this.camera = camera;
             this.map = map;
             this.animatedSprites = animatedSprites;
@@ -49,6 +51,11 @@ namespace NewKillingStory.Model
             AddAnimation(3, 129, 0, "Right", 64, 64);
             AddAnimation(3, 193, 0, "Up", 64, 64);
             PlayAnimation("Down");
+        }
+
+        public Vector2 GetPosition()
+        {
+            return position;
         }
         // Loads content specific to the player class
         public void LoadContent(Texture2D character)

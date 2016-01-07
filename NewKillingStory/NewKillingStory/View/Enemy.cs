@@ -23,6 +23,7 @@ namespace NewKillingStory.View
 
         Vector2 veclocity = Vector2.Zero;
         Player player;
+        //Vector2 position;
         
         const float enemyCreationTimer = 1.5f;//Hur länge en fiende ska vänta innan spawn igen
 
@@ -32,7 +33,7 @@ namespace NewKillingStory.View
         public Enemy(Vector2 position, Camera camera, GraphicsDeviceManager graphics, Texture2D texture, Player _player) : base(position, camera)
         {
             //velocity = new Vector2(2,2);//speed later
-
+            this.position = position;
             this.graphics = graphics;
 
             character = texture;
@@ -50,6 +51,11 @@ namespace NewKillingStory.View
             //AddAnimation(6, 0, 0, "Enemy", 32, 32);
             PlayAnimation("Enemy");
         }
+
+        public Vector2 GetPosition()
+        {
+            return position;
+        }
         public void LoadContent(Texture2D character)
         {
             this.character = character;//laddar in character!
@@ -66,7 +72,31 @@ namespace NewKillingStory.View
 
             direction *= enemySpeed;//Applies the speed speed
 
-            position += (direction * deltaTime);//Makes the movement framerate independent by multiplying with deltaTime
+            //Console.WriteLine(player.GetPosition());
+
+            Vector2 playerPos = player.GetPosition();
+
+            if (position.X < player.GetPosition().X)
+            {
+                position.X += 0.8f;
+            }
+            else if (position.X > player.GetPosition().X)
+            {
+                position.X -= 0.8f;
+            }
+
+            if (position.Y < player.GetPosition().Y)
+            {
+                position.Y += 0.8f;
+            }
+            else if(position.Y > player.GetPosition().Y)
+            {
+                position.Y -= 0.8f;
+            }
+
+            // position += (direction * deltaTime);//Makes the movement framerate independent by multiplying with deltaTime
+
+            //position.X += 1f;
 
             // Creates a new enemy everytime the current amount of enemies is less than the max allowed and the minimum amount of time between creations has been reached.
             if (elapsedTime >= enemyCreationTimer && enemies.Count < maxEnemies)
