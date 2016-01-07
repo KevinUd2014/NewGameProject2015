@@ -10,7 +10,7 @@ namespace NewKillingStory.View
 {
     class Enemy : AnimatedSprites
     {
-        float enemySpeed = 50;
+        float enemySpeed = 0.8f;
         const int maxEnemies = 2;// Maximum amount of enemies to be shown at a time.
 
         Random random = new Random();// An instance of the Random object that will be used to calculate random coordinates to position the enemy.
@@ -24,6 +24,7 @@ namespace NewKillingStory.View
         Vector2 veclocity = Vector2.Zero;
         Player player;
         //Vector2 position;
+        int life = 2;
         
         const float enemyCreationTimer = 1.5f;//Hur länge en fiende ska vänta innan spawn igen
 
@@ -52,7 +53,7 @@ namespace NewKillingStory.View
             PlayAnimation("Enemy");
         }
 
-        public Vector2 GetPosition()
+        public Vector2 GetPosition()// gets the player position!
         {
             return position;
         }
@@ -78,39 +79,21 @@ namespace NewKillingStory.View
 
             if (position.X < player.GetPosition().X)
             {
-                position.X += 0.8f;
+                position.X += enemySpeed;
             }
             else if (position.X > player.GetPosition().X)
             {
-                position.X -= 0.8f;
+                position.X -= enemySpeed;
             }
 
             if (position.Y < player.GetPosition().Y)
             {
-                position.Y += 0.8f;
+                position.Y += enemySpeed;
             }
             else if(position.Y > player.GetPosition().Y)
             {
-                position.Y -= 0.8f;
+                position.Y -= enemySpeed;
             }
-
-            // position += (direction * deltaTime);//Makes the movement framerate independent by multiplying with deltaTime
-
-            //position.X += 1f;
-
-            // Creates a new enemy everytime the current amount of enemies is less than the max allowed and the minimum amount of time between creations has been reached.
-            if (elapsedTime >= enemyCreationTimer && enemies.Count < maxEnemies)
-            {
-                enemies.Add(// The random instance is used to calculate a position between 0 and the max width/height that can be used in order to show the enemy texture inside the game window.
-                new Rectangle(
-                random.Next(0, (graphics.PreferredBackBufferWidth - enemyWidth)),
-                random.Next(0, (graphics.PreferredBackBufferHeight - enemyHeight)),
-                enemyWidth,
-                enemyHeight));
-                // Reset the elapsed time for new enemy
-                elapsedTime = 0;
-            }
-            //Console.WriteLine(position);
             HandleEnenmy(gameTime);
 
             base.Update(gameTime);
@@ -121,16 +104,5 @@ namespace NewKillingStory.View
             PlayAnimation("Enemy");
             currentDirection = myDirection.down;
         }
-        //public void Draw(SpriteBatch spriteBatch)//  denna fungerar inte men måste ha denna om jag vill placera ut fiender random på mappen!// ändras i gamecontrollern också!
-        //{
-        //    foreach (Rectangle rectangle in enemies)
-        //    {
-        //        spriteBatch.Draw(character, rectangle, Color.White);
-        //    }
-        //}
-        //public static void SetTexture(Texture2D tex)//för random fiender på skärmen!
-        //{
-        //    texture = tex;
-        //}
     }
 }

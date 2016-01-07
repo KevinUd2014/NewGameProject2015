@@ -26,10 +26,9 @@ namespace NewKillingStory.Model
         Camera camera;
         private List<AnimatedSprites> animatedSprites;
         SoundEffect fireballSound;
-        //Texture2D character;
-        //bool attacking = false;
+
         GameController gameController;
-       // Vector2 position;
+        int life = 5;
 
         /// The constructor of the Player class//
         public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController, SoundEffect _fireballSound) : base(position, camera)//this position is handled through the base class
@@ -62,10 +61,8 @@ namespace NewKillingStory.Model
         {
             this.character = character;//laddar in charactern!
         }
-
         public override void Update(GameTime gameTime)
         {
-           
             direction = Vector2.Zero; //Makes the player stop moving when no key is pressed
 
             HandleKeyboardInput(Keyboard.GetState(), gameTime);//Handles the users keyboard input
@@ -177,7 +174,7 @@ namespace NewKillingStory.Model
             bool tileSW = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
             bool tileSE = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)((pos.X + size.X) / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
 
-            bool tileChangeWorld = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] == 8;
+            bool tileChangeWorld = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] == 9;
 
             if (tileChangeWorld && gameController.onFirstLevel == true )//&& gameController.onSecondLevel == false && gameController.onThirdLevel == false)
             {
