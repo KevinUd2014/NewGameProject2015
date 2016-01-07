@@ -295,7 +295,7 @@ namespace NewKillingStory
                 case Gamestate.GameOver:
                     spriteBatch.Draw(gameOverScreen, gameOverRectangle, Color.White);
 
-                    spriteBatch.DrawString(spritefont, "Press Enter for main menu", new Vector2(400, 400), Color.White);
+                    spriteBatch.DrawString(spritefont, "Press Enter for main menu", new Vector2(200, 400), Color.White);
                     break;
             }
             spriteBatch.End();

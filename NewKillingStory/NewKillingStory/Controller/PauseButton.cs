@@ -23,11 +23,6 @@ namespace NewKillingStory.Controller
         bool down;
         public bool isClicked;
 
-        public PauseButton()
-        {
-
-        }
-
         public void Load(Texture2D newTexture, Vector2 newPosition)
         {
             position = newPosition;

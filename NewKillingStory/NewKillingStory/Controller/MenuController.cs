@@ -66,7 +66,7 @@ namespace NewKillingStory.Controller
                     isInstructionClicked = true;
             }
             else if (color.A < 255)
-            {
+            {//funkar detta? JA!
             //    color.A += 3;
                 isClicked = false;
             }

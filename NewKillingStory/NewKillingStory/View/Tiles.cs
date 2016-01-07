@@ -10,7 +10,7 @@ using System.Text;
 namespace NewKillingStory
 {
     class Tiles
-    {
+    {//
         Camera camera;
 
         public Tiles(Camera camera)

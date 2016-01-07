@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 
 namespace NewKillingStory.View
-{
+{//
     class ParticleOverScreen
     {
         Texture2D texture;

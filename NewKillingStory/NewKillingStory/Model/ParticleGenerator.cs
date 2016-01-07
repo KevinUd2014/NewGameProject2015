@@ -14,7 +14,7 @@ namespace NewKillingStory.Model
         float spawnWidth;
         float density;
 
-        Camera camera;
+        Camera camera;//
 
         List<ParticleOverScreen> particles = new List<ParticleOverScreen>();
 

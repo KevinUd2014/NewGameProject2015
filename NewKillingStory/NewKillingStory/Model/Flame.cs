@@ -14,7 +14,7 @@ namespace NewKillingStory.Model
         private static Texture2D texture;
         private float age;
         private float range;
-        Camera camera;
+        Camera camera;//
 
         public Flame(Vector2 position, Vector2 velocity, Camera camera, float range = 2f) : base(position, camera)
         {

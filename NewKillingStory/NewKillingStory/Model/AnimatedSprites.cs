@@ -52,13 +52,6 @@ namespace NewKillingStory.Model
 
         // Dictionary that contains all animations
         private Dictionary<string, Rectangle[]> animations = new Dictionary<string, Rectangle[]>();
-        
-        // Constructor of the AnimatedSprite
-        //public AnimatedSprites(Vector2 position, Camera camera)
-        //{
-        //    this.camera = camera;
-        //    this.position = position;
-        //}
 
         public AnimatedSprites(Vector2 position, Camera camera)
         {

@@ -31,7 +31,7 @@ namespace NewKillingStory.Model
         GameController gameController;
        // Vector2 position;
 
-        /// The constructor of the Player class
+        /// The constructor of the Player class//
         public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController, SoundEffect _fireballSound) : base(position, camera)//this position is handled through the base class
         {
             this.position = position;

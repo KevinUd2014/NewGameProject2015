@@ -14,7 +14,7 @@ namespace NewKillingStory.View
         private float XCoord;
         private float YCoord;
 
-        public Camera(Viewport port)//konstruktorn sköter skalningen på allt i fönstret!
+        public Camera(Viewport port)//konstruktorn sköter skalningen på allt i fönstret!//
         {
             XCoord = port.Width;
             YCoord = port.Height;

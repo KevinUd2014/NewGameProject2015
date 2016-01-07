@@ -26,7 +26,7 @@ namespace NewKillingStory.View
             //fade effekt på meny namnet!
             fadeDelay -= elapsedSeconds;
 
-            if (fadeDelay <= 0)//denna if sats kommer att fixa fade på titel texten!
+            if (fadeDelay <= 0)//denna if sats kommer att fixa fade på titel texten!//
             {
                 fadeDelay = 0.010;
                 alphaValue += fadeIncrement;

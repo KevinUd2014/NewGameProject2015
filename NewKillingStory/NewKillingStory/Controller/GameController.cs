@@ -59,18 +59,9 @@ namespace NewKillingStory.Controller
 
             _content = Content;
             gameController = _gameController;
-            //AnimatedSprites = new List<Model.AnimatedSprites>(); 
-            //map = new Map(camera);
-            //player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera);// start positionen för player!
-            //enemy = new Enemy(new Vector2(0,0), camera, graphics, enemyTexture);
             character = Content.Load<Texture2D>("imp");
-            //player.LoadContent(character);
-            //enemy.LoadContent(enemyTexture);
-
-            //Enemy.SetTexture(Content.Load<Texture2D>("Bat"));
             Flame.SetTexture(Content.Load<Texture2D>("flame_sprite"));
-            //backgroundMusic.Play(0.1f, 0.0f, 0.0f);
-            //Tiles.Content = Content;
+            
             soundEffectInstance = backgroundMusic.CreateInstance();
 
             onFirstLevel = false;

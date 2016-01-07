@@ -72,7 +72,7 @@ namespace NewKillingStory.View
 
             direction *= enemySpeed;//Applies the speed speed
 
-            //Console.WriteLine(player.GetPosition());
+            //Console.WriteLine(player.GetPosition());//
 
             Vector2 playerPos = player.GetPosition();
 
