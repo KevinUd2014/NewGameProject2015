@@ -14,10 +14,11 @@ namespace NewKillingStory.Model
         private static Texture2D texture;
         private float age;
         private float range;
-        Camera camera;//
+        private Map map;
 
-        public Flame(Vector2 position, Vector2 velocity, Camera camera, float range = 2f) : base(position, camera)
+        public Flame(Vector2 position, Map map, Vector2 velocity, Camera camera, float range = 2f) : base(position, camera)
         {
+            this.map = map;
             this.velocity = velocity;
             this.range = range;
 
@@ -34,6 +35,12 @@ namespace NewKillingStory.Model
             age += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (age > range)
                 Alive = false;
+            int x = (int)(position.X / map.Width * map.tilemap.GetLength(1));
+            int y = (int)(position.Y / map.Height * map.tilemap.GetLength(0));
+            if (x >= 0 && y >= 0 && x < map.tilemap.GetLength(1) && y < map.tilemap.GetLength(0) && map.tilemap[y,x] % 2 == 0)
+            {
+                Alive = false;
+            }
 
             base.Update(gameTime);
         }

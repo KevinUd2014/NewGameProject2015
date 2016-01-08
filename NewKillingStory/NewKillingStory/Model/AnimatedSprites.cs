@@ -41,6 +41,9 @@ namespace NewKillingStory.Model
 
         public bool Alive = true;
 
+        public int life = 1;
+        public int giveDamage = 0;
+
         // Our time per frame is equal to 1 divided by frames per second(we are deciding FPS)
         public int FramesPerSecond
         {
@@ -73,6 +76,10 @@ namespace NewKillingStory.Model
             }                                   // sätter start positionen på frame
             animations.Add(name, newRectangle);// lägger till allt i rektangel some n animation!
         }
+        public Vector2 GetPosition()
+        {
+            return position;
+        }
         // Determines when we have to change frames
         public virtual void Update(GameTime gameTime)
         {
@@ -95,14 +102,15 @@ namespace NewKillingStory.Model
                     frameIndex = 0;
                 }
             }
+
+            if (life <= 0)
+            {
+                Alive = false;
+            }
         }
         ///// Draws the sprite on the screen
-        public void Draw(SpriteBatch spriteBatch, AnimatedSprites animatedSprite = null)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            if (animatedSprite is Enemy)
-            {
-                position = (animatedSprite as Enemy).GetPosition();
-            }
             spriteBatch.Draw(character,
                 position,//position,
                 animations[currentAnimation][frameIndex],

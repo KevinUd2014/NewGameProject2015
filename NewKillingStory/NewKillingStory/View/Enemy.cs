@@ -10,7 +10,10 @@ namespace NewKillingStory.View
 {
     class Enemy : AnimatedSprites
     {
-        float enemySpeed = 0.8f;
+        Map map;
+
+        Vector4 hitbox;
+        float enemySpeed = 0.8f * 2f;
         const int maxEnemies = 2;// Maximum amount of enemies to be shown at a time.
 
         Random random = new Random();// An instance of the Random object that will be used to calculate random coordinates to position the enemy.
@@ -23,16 +26,18 @@ namespace NewKillingStory.View
 
         Vector2 veclocity = Vector2.Zero;
         Player player;
-        //Vector2 position;
-        int life = 2;
         
         const float enemyCreationTimer = 1.5f;//Hur länge en fiende ska vänta innan spawn igen
 
-        // Elapsed time since the last creation of an enemy.
-        double elapsedTime = 0;
+        private List<AnimatedSprites> animatedSprites;
 
-        public Enemy(Vector2 position, Camera camera, GraphicsDeviceManager graphics, Texture2D texture, Player _player) : base(position, camera)
+        public Enemy(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GraphicsDeviceManager graphics, Texture2D texture, Player _player) : base(position, camera)
         {
+            this.map = map;
+            hitbox = new Vector4(15, 40, 49, 66); // bästa raden gällande karaktären!
+            this.animatedSprites = animatedSprites;
+            this.life = 2;
+            this.giveDamage = 5;
             //velocity = new Vector2(2,2);//speed later
             this.position = position;
             this.graphics = graphics;
@@ -53,56 +58,67 @@ namespace NewKillingStory.View
             PlayAnimation("Enemy");
         }
 
-        public Vector2 GetPosition()// gets the player position!
+        public Vector2 GetPosition()// gets the enemy position!
         {
             return position;
         }
-        public void LoadContent(Texture2D character)
-        {
-            this.character = character;//laddar in character!
-        }
         public override void Update(GameTime gameTime)
         {
-            // Calculates the amount of time, in seconds, that passed between the previous call to the Update method and this one.
-            //elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-            //veclocity += new Vector2(0, 1.5f);
-
             direction = Vector2.Zero; //Makes the player stop moving when no key is pressed
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;//Calculates how many seconds since last Update//Is not based on fps!
 
             direction *= enemySpeed;//Applies the speed speed
 
-            //Console.WriteLine(player.GetPosition());//
+            Vector2 playerPosition = player.GetPosition();
+            Vector2 targetVector = playerPosition - position;
+            targetVector.Normalize();
 
-            Vector2 playerPos = player.GetPosition();
-
-            if (position.X < player.GetPosition().X)
+            Vector2 col = checkForCollision(position + targetVector * enemySpeed);
+            targetVector = targetVector * (Vector2.One - col);
+            position += targetVector * enemySpeed;
+            
+            foreach (AnimatedSprites sprite in animatedSprites)
             {
-                position.X += enemySpeed;
+                if (sprite.GetType() == typeof(Flame) && sprite.Alive)
+                {
+                    Flame flame = sprite as Flame;
+                    if ((flame.GetPosition() - position).Length() <= 20)
+                    {
+                        flame.Alive = false;
+                        life -= flame.giveDamage;
+                    }
+                }
             }
-            else if (position.X > player.GetPosition().X)
-            {
-                position.X -= enemySpeed;
-            }
-
-            if (position.Y < player.GetPosition().Y)
-            {
-                position.Y += enemySpeed;
-            }
-            else if(position.Y > player.GetPosition().Y)
-            {
-                position.Y -= enemySpeed;
-            }
-            HandleEnenmy(gameTime);
-
             base.Update(gameTime);
         }
-        public void HandleEnenmy(GameTime gameTime)
+
+        public Vector2 checkForCollision(Vector2 pos)//denna funktion fick jag hjälp med då den är ganska komplex och avancerad!
         {
-            direction += new Vector2(0, -1.5f);
-            PlayAnimation("Enemy");
-            currentDirection = myDirection.down;
+            pos.X += hitbox.X;
+            pos.Y += hitbox.Y;
+
+            Vector2 size = new Vector2(hitbox.Z - hitbox.X, hitbox.W - hitbox.Y);
+            try
+            {
+                bool tileNW = map.tilemap[(int)(pos.Y / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
+                bool tileNE = map.tilemap[(int)(pos.Y / map.Height * map.tilemap.GetLength(0)), (int)((pos.X + size.X) / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
+                bool tileSW = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
+                bool tileSE = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)((pos.X + size.X) / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
+
+                float x = (tileSW && tileNW) ? 1 : 0;
+                x += (tileSE && tileNE) ? 1 : 0;
+                float y = (tileNW && tileNE) ? 1 : 0;
+                y += (tileSW && tileSE) ? 1 : 0;
+
+                return new Vector2(x, y);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                return Vector2.Zero;
+            }
+            //bool outside = pos.X < 0 || pos.X + hitbox.Z > map.Width || pos.Y < 0 || pos.Y + hitbox.W > map.Height;
+            
         }
     }
 }

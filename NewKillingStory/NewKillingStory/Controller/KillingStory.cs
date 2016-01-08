@@ -16,12 +16,10 @@ namespace NewKillingStory
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         MouseState lastMouseState;
-        Enemy enemy;
         
         GameController gameController;
         MenuController menuController;
         Camera camera;
-        ParticleGenerator snow;
         ParticleGenerator rain;
 
         //pause funktionen
@@ -40,7 +38,7 @@ namespace NewKillingStory
         PauseButton buttonPlay, buttonQuit, buttonMainMenu, buttonInstruction, buttonBack;
 
         /// http://gamedev.stackexchange.com/questions/108518/monogame-screen-transition-with-fading
-        enum Gamestate//vet inte om denna! verkade vara det bästa sättet
+        public enum Gamestate//vet inte om denna! verkade vara det bästa sättet
         {
             Menu,//we have a menu
             Play,//and a play
@@ -61,7 +59,7 @@ namespace NewKillingStory
             Content.RootDirectory = "Content";
         }
         
-        Gamestate ScreenState = Gamestate.Menu;//menu will be the deffault!
+        public Gamestate ScreenState = Gamestate.Menu;//menu will be the deffault!
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -87,12 +85,9 @@ namespace NewKillingStory
             
             //create all the necessary classes!
             menuController = new MenuController();
-            gameController = new GameController();
+            gameController = new GameController(this);
             
-            //camera
             camera = new Camera(GraphicsDevice.Viewport);
-            //enemy
-            //enemy = new Enemy(enemyTexture, camera, graphics);
 
             //snow = new ParticleGenerator(Content.Load<Texture2D>("Snowflake"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
             rain = new ParticleGenerator(Content.Load<Texture2D>("Rain"), graphics.GraphicsDevice.Viewport.Width, 50, camera);
@@ -128,9 +123,7 @@ namespace NewKillingStory
             buttonInstruction.Load(Content.Load<Texture2D>("InstructionsButton"), new Vector2(400, 550));
             buttonBack = new PauseButton();
             buttonBack.Load(Content.Load<Texture2D>("ButtonBack"), new Vector2(740, 780));
-
-            //menuView = new MenuView();
-
+            
             //load all the classes and give them all the necessary parameters!
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton, instructionButton);
             gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics, backgroundMusic, gameController, fireballSound, spritefont);
@@ -161,39 +154,33 @@ namespace NewKillingStory
                 case Gamestate.Menu:
                     IsMouseVisible = true;
                     menuController.Update((float)gameTime.ElapsedGameTime.TotalSeconds, mouse);
-
-                    //menuController.isInstructionClicked = false;
-                    //player.Update(gameTime);
+                    
                     if (menuController.isClicked == true && lastMouseState.LeftButton == ButtonState.Released) 
                     {
                         ScreenState = Gamestate.Play;
+
+                        gameController.StartGame();
+                        gameController.Level1();
+
                         IsMouseVisible = true;
                         menuController.isClicked = false;  // har problem med vart jag ska sätta dessa för att dom ska bli bra menyerna buggar lite!
                     }
                     if (menuController.isInstructionClicked == true && lastMouseState.LeftButton == ButtonState.Released)
                     {
-                        //menuController.isInstructionClicked = false;
                         ScreenState = Gamestate.Instructions;
                         IsMouseVisible = true;
-                        //menuController.isInstructionClicked = true; // denna finns i instruction gamestate!
+                        menuController.isInstructionClicked = true; // denna finns i instruction gamestate!
                     }
                     break;
                 case Gamestate.Play:
-                    //enemy.Update(gameTime);
-                    //snow.Update(gameTime, graphics.GraphicsDevice);
+
                     rain.Update(gameTime, graphics.GraphicsDevice);
                     IsMouseVisible = false;
-                   
-                    //if (menuController.isClicked == false)
-                    //    menuController.isClicked = true;
 
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                     {
                         ScreenState = Gamestate.Pause;
-                        buttonPlay.isClicked = false;//vet inte om denna behövs!
-                        //menuController.isClicked = true;
                     }
-                    //menuController.isClicked = true;
                     gameController.Update(gameTime);
 
                     break;
@@ -209,14 +196,12 @@ namespace NewKillingStory
                     if (buttonMainMenu.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         ScreenState = Gamestate.Menu;
-                        buttonPlay.isClicked = true;//vet inte om denna behövs!
-                        //menuController.isClicked = false;
+                        buttonMainMenu.isClicked = false;
                     }
                     if(buttonInstruction.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         ScreenState = Gamestate.Instructions;
                     }
-                    //buttonPlay.isClicked = false;
                     buttonPlay.Update(mouse);
                     buttonQuit.Update(mouse);
                     buttonMainMenu.Update(mouse);
@@ -272,9 +257,7 @@ namespace NewKillingStory
                     menuController.Draw(spriteBatch, (float)gameTime.ElapsedGameTime.TotalSeconds);
                     break;
                 case Gamestate.Play:
-                    gameController.Draw(spriteBatch);//, camera);
-                    //enemy.Draw(spriteBatch);
-
+                    gameController.Draw(spriteBatch);
                     //snow.Draw(spriteBatch);//snöpartiklarna!
                     rain.Draw(spriteBatch);//regnpartiklarna!
                     break;

@@ -22,17 +22,21 @@ namespace NewKillingStory.Model
         Vector4 hitbox;
 
         private float lastShot = 0;
-        private float fireRate = 0.2f;
+        private float fireRate = 0.3f;
+        private float spread = 45f;
+        private Random spreadRandom;
         Camera camera;
         private List<AnimatedSprites> animatedSprites;
         SoundEffect fireballSound;
 
         GameController gameController;
-        int life = 5;
 
-        /// The constructor of the Player class//
+        // The constructor of the Player class//
         public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController, SoundEffect _fireballSound) : base(position, camera)//this position is handled through the base class
         {
+            spreadRandom = new Random();
+            this.life = 5;
+            this.giveDamage = 1;
             this.position = position;
             this.camera = camera;
             this.map = map;
@@ -73,7 +77,24 @@ namespace NewKillingStory.Model
             
             position += (direction * deltaTime);//Makes the movement framerate independent by multiplying with deltaTime
             
+            foreach (AnimatedSprites sprite in animatedSprites)
+            {
+                if(sprite.GetType() == typeof(Enemy) && sprite.Alive)
+                {
+                    Enemy enemy = sprite as Enemy;
+                    if((enemy.GetPosition() - position).Length() <=20)
+                    {
+                        life -= enemy.giveDamage;
+                    }
+                }
+            }
+
             base.Update(gameTime);
+
+            if (!Alive)
+            {
+                gameController.GameOver();
+            }
         }
         public void HandleKeyboardInput(KeyboardState keyState, GameTime gameTime)
         {
@@ -110,55 +131,48 @@ namespace NewKillingStory.Model
             {
                 PlayAnimation("Up");
                 currentDirection = myDirection.up;
-                if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
-                {
-                    fireballSound.Play();
-                    attack(new Vector2(0, -5));
-                    lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
-                }
+                shoot(gameTime, new Vector2(0, -5));
 
             }
             if (keyState.IsKeyDown(Keys.Down))
             {
                 PlayAnimation("Down");
                 currentDirection = myDirection.down;
-                if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
-                {
-                    fireballSound.Play();
-                    attack(new Vector2(0, 5));
-                    lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
-                }
+                shoot(gameTime, new Vector2(0, 5));
 
             }
             if (keyState.IsKeyDown(Keys.Right))
             {
                 PlayAnimation("Right");
                 currentDirection = myDirection.right;
-                if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
-                {
-                    fireballSound.Play();
-                    attack(new Vector2(5, 0));
-                    lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
-                }
+                shoot(gameTime, new Vector2(5, 0));
 
             }
             if (keyState.IsKeyDown(Keys.Left))
             {
                 PlayAnimation("Left");
                 currentDirection = myDirection.left;
-                if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
-                {
-                    fireballSound.Play();
-                    attack(new Vector2(-5, 0));
-                    lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
-                }
+                shoot(gameTime, new Vector2(-5, 0));
             }
             currentDirection = myDirection.none;
         }
 
+        private void shoot(GameTime gameTime, Vector2 bulletSpeed)
+        {
+            if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
+            {
+                fireballSound.Play(1, (float)spreadRandom.NextDouble() * 2f - 1f, (float)spreadRandom.NextDouble() * 2f - 1f);
+                attack(bulletSpeed);
+                lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
+            }
+        }
+
         private void attack(Vector2 V)
         {
-            animatedSprites.Add(new Flame(position,V, camera));
+            //float s = (spread * (float)spreadRandom.NextDouble() - spread/2f) * (float)Math.PI / 180f;
+            Flame flame = new Flame(position,map, V, camera);
+            flame.giveDamage = giveDamage;
+            animatedSprites.Add(flame);
         }
       
 
@@ -174,29 +188,33 @@ namespace NewKillingStory.Model
             bool tileSW = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
             bool tileSE = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)((pos.X + size.X) / map.Width * map.tilemap.GetLength(1))] % 2 == 0;
 
-            bool tileChangeWorld = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] == 9;
+            if (gameController.enemyCount <= 0)
+            {
+                bool tileChangeWorld = map.tilemap[(int)((pos.Y + size.Y) / map.Height * map.tilemap.GetLength(0)), (int)(pos.X / map.Width * map.tilemap.GetLength(1))] == 9;
 
-            if (tileChangeWorld && gameController.onFirstLevel == true )//&& gameController.onSecondLevel == false && gameController.onThirdLevel == false)
-            {
-                gameController.StartGame();
-                gameController.Level2();
-                gameController.onFirstLevel = false;
-                tileChangeWorld = false;             
-            }
-            if (tileChangeWorld && gameController.onSecondLevel == true && gameController.onFirstLevel == false && gameController.onThirdLevel == false)
-            {
-                gameController.StartGame();
-                gameController.Level3();
-                gameController.onSecondLevel = false;
-                tileChangeWorld = false;
-            }
-            if (tileChangeWorld && gameController.onThirdLevel == true)
-            {
-                gameController.StartGame();
-                gameController.Level1();
-                gameController.onThirdLevel = false;
-                gameController.onSecondLevel = false;
-                tileChangeWorld = false;
+                if (tileChangeWorld && gameController.onFirstLevel == true)//&& gameController.onSecondLevel == false && gameController.onThirdLevel == false)
+                {
+                    gameController.StartGame();
+                    gameController.Level2();
+                    gameController.onFirstLevel = false;
+                    gameController.onThirdLevel = false;
+                    tileChangeWorld = false;
+                }
+                if (tileChangeWorld && gameController.onSecondLevel == true && gameController.onFirstLevel == false && gameController.onThirdLevel == false)
+                {
+                    gameController.StartGame();
+                    gameController.Level3();
+                    gameController.onSecondLevel = false;
+                    tileChangeWorld = false;
+                }
+                if (tileChangeWorld && gameController.onThirdLevel == true)
+                {
+                    gameController.StartGame();
+                    gameController.Level1();
+                    gameController.onThirdLevel = false;
+                    gameController.onSecondLevel = false;
+                    tileChangeWorld = false;
+                }
             }
             bool outside = pos.X < 0 || pos.X + hitbox.Z > map.Width || pos.Y < 0 || pos.Y + hitbox.W > map.Height;
 

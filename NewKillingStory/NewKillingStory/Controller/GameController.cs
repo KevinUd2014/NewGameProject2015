@@ -21,7 +21,6 @@ namespace NewKillingStory.Controller
         GraphicsDeviceManager _graphics;
         Texture2D _enemyTexture;
         Camera camera;
-        Texture2D enemyText;
         public List<AnimatedSprites> AnimatedSprites;
         Texture2D character;
         ContentManager _content;
@@ -31,16 +30,25 @@ namespace NewKillingStory.Controller
         SoundEffectInstance soundEffectInstance;
         List<Enemy> enemyList = new List<Enemy>();
 
+        int tileSize = 64;
+
         SpriteFont spritefont;
 
         public bool onFirstLevel;
         public bool onSecondLevel;
         public bool onThirdLevel;
 
+        public int enemyCount = 10;
+        private float enemySpawnTimer = .5f;
+        private float enemyLastSpawned = 0;
+
         GameController gameController;
 
-        public GameController()
+        KillingStory killingStory;
+
+        public GameController(KillingStory killingStory)
         {
+            this.killingStory = killingStory;
         }
 
         public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport, 
@@ -67,9 +75,7 @@ namespace NewKillingStory.Controller
             onFirstLevel = false;
             onSecondLevel = false;
             onThirdLevel = false;
-
-            StartGame();
-            Level1();
+            
         }
         public void StartGame()
         {
@@ -77,17 +83,11 @@ namespace NewKillingStory.Controller
             AnimatedSprites = new List<Model.AnimatedSprites>();
             map = new Map(camera);
             player = new Player(new Vector2(340, 220), map, AnimatedSprites, camera, gameController, fireballSound);// start positionen för player!
-            enemy = new Enemy(new Vector2(300, 0), camera, _graphics, _enemyTexture, player);
-            enemyList.Add(enemy);
-           // enemyList.Add(new Enemy(new Vector2(300, 0), camera, _graphics, _enemyTexture, player));
-            enemyList.Add(new Enemy(new Vector2(100, 0), camera, _graphics, _enemyTexture, player));
-           // enemyList.Add(new Enemy(new Vector2(200, 0), camera, _graphics, _enemyTexture, player));
+            AnimatedSprites.Add(player);
 
             player.LoadContent(character);
-            enemy.LoadContent(_enemyTexture);
-            //Flame.SetTexture(_content.Load<Texture2D>("flame_sprite"));
 
-            soundEffectInstance.Play();
+            soundEffectInstance.Play();//
 
             soundEffectInstance.Volume = 0.1f;
             soundEffectInstance.Pan = -0.0f;
@@ -95,6 +95,12 @@ namespace NewKillingStory.Controller
 
             Tiles.Content = _content;
         }
+
+        public void GameOver()
+        {
+            killingStory.ScreenState = KillingStory.Gamestate.GameOver;
+        }
+
         public void Level1()
         {
             map.Generate(new int[,]{//denna sätter hur många tiles jag vill ha och vart jag vill ha dem på skärmen!
@@ -112,8 +118,10 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            }, 64);//med 64 så menar jag 64 pixlar!
+            }, tileSize);//med tileSize så menar jag 64 pixlar! int tilesize = 64;
             onFirstLevel = true;
+            enemySpawnTimer = 1f;
+            enemyCount = 10;
         }
         public void Level2()
         {
@@ -132,8 +140,10 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            }, 64);//med 64 så menar jag 64 pixlar!
+            }, tileSize);//med tileSize så menar jag 64 pixlar! int tilesize = 64;
             onSecondLevel = true;
+            enemySpawnTimer = 1f;
+            enemyCount = 20;
         }
         public void Level3()
         {
@@ -152,17 +162,47 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            }, 64);//med 64 så menar jag 64 pixlar!
+            }, tileSize);//med tileSize så menar jag 64 pixlar! int tilesize = 64;
             onThirdLevel = true;
+            enemySpawnTimer = 1f;
+            enemyCount =40;
         }
 
         public void Update(GameTime gameTime)
-        {   
-            player.Update(gameTime);
-            foreach (Enemy enemy in enemyList)
+        {
+            if (gameTime.TotalGameTime.TotalSeconds - enemyLastSpawned > enemySpawnTimer && enemyCount > 0)
             {
-               enemy.Update(gameTime);
+                Random r = new Random();
+                int side = (int)(r.NextDouble() * 4);
+
+                float length = (float)r.NextDouble();
+
+                Vector2 pos = new Vector2(0, 0);
+                switch (side)
+                {
+                    case 0:
+                        pos.X = map.Width * length;
+                        pos.Y = 0f;
+                        break;
+                    case 1:
+                        pos.X = map.Width * length;
+                        pos.Y = map.Height;
+                        break;
+                    case 2:
+                        pos.Y = map.Height * length;
+                        pos.X = 0f;
+                        break;
+                    case 3:
+                        pos.Y = map.Height * length;
+                        pos.X = map.Width;
+                        break;
+                }
+
+                AnimatedSprites.Add(new Enemy(pos, map, AnimatedSprites, camera, _graphics, _enemyTexture, player));
+                enemyLastSpawned = (float) gameTime.TotalGameTime.TotalSeconds;
+                enemyCount--;
             }
+
             for (int i = AnimatedSprites.Count - 1; i >= 0; i--)
             {
                 if (AnimatedSprites[i].Alive)
@@ -174,23 +214,17 @@ namespace NewKillingStory.Controller
         public void Draw(SpriteBatch spriteBatch)//, Camera camera)
         {
             map.Draw(spriteBatch);
-            player.Draw(spriteBatch, player);
 
-            foreach (Enemy enemy in enemyList)
-            {
-                enemy.Draw(spriteBatch, enemy);
-            }
-
-            if (onFirstLevel == true)
-            {
-                spriteBatch.DrawString(spritefont, "First Level", new Vector2(10, 790), Color.Black);
-            }
-            if (onSecondLevel == true)
-            {
-                spriteBatch.DrawString(spritefont, "Second Level", new Vector2(10, 790), Color.Black);
-            }
-            if (onThirdLevel == true)
-                spriteBatch.DrawString(spritefont, "Third Level", new Vector2(10, 790), Color.Black);
+            //if (onFirstLevel == true)
+            //{
+            //    spriteBatch.DrawString(spritefont, "First Level", new Vector2(10, 790), Color.Black);
+            //}
+            //if (onSecondLevel == true)
+            //{
+            //    spriteBatch.DrawString(spritefont, "Second Level", new Vector2(10, 790), Color.Black);
+            //}
+            //if (onThirdLevel == true)
+            //    spriteBatch.DrawString(spritefont, "Third Level", new Vector2(10, 790), Color.Black);
 
 
             for (int i = AnimatedSprites.Count - 1; i >= 0; i--)

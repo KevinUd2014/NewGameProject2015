@@ -14,7 +14,7 @@ namespace NewKillingStory
         Camera camera;
         private List<CollisionTiles> mapTiles = new List<CollisionTiles>();// skapar några listor som gör att jag kan lägga till alla mina tiles spriset här i för att skapa kollision
 
-        private int[,] map;//
+        private int[,] map;
 
         public int[,] tilemap
         {
