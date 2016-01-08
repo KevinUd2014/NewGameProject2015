@@ -100,6 +100,10 @@ namespace NewKillingStory.Controller
         {
             killingStory.ScreenState = KillingStory.Gamestate.GameOver;
         }
+        public void Finished()
+        {
+            killingStory.ScreenState = KillingStory.Gamestate.Finished;
+        }
 
         public void Level1()
         {
@@ -120,6 +124,8 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             }, tileSize);//med tileSize så menar jag 64 pixlar! int tilesize = 64;
             onFirstLevel = true;
+            onSecondLevel = false;
+            onThirdLevel = false;
             enemySpawnTimer = 1f;
             enemyCount = 10;
         }
@@ -142,6 +148,8 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             }, tileSize);//med tileSize så menar jag 64 pixlar! int tilesize = 64;
             onSecondLevel = true;
+            onFirstLevel = false;
+            onThirdLevel = false;
             enemySpawnTimer = 1f;
             enemyCount = 20;
         }
@@ -164,6 +172,8 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             }, tileSize);//med tileSize så menar jag 64 pixlar! int tilesize = 64;
             onThirdLevel = true;
+            onSecondLevel = false;
+            onFirstLevel = false;
             enemySpawnTimer = 1f;
             enemyCount =40;
         }
@@ -215,16 +225,16 @@ namespace NewKillingStory.Controller
         {
             map.Draw(spriteBatch);
 
-            //if (onFirstLevel == true)
-            //{
-            //    spriteBatch.DrawString(spritefont, "First Level", new Vector2(10, 790), Color.Black);
-            //}
-            //if (onSecondLevel == true)
-            //{
-            //    spriteBatch.DrawString(spritefont, "Second Level", new Vector2(10, 790), Color.Black);
-            //}
-            //if (onThirdLevel == true)
-            //    spriteBatch.DrawString(spritefont, "Third Level", new Vector2(10, 790), Color.Black);
+            if (onFirstLevel == true)
+            {
+                spriteBatch.DrawString(spritefont, "First Level", new Vector2(10, 790), Color.Black);
+            }
+            if (onSecondLevel == true)
+            {
+                spriteBatch.DrawString(spritefont, "Second Level", new Vector2(10, 790), Color.Black);
+            }
+            if (onThirdLevel == true)
+                spriteBatch.DrawString(spritefont, "Third Level", new Vector2(10, 790), Color.Black);
 
 
             for (int i = AnimatedSprites.Count - 1; i >= 0; i--)

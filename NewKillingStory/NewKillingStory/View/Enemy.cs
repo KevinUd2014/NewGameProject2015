@@ -58,7 +58,7 @@ namespace NewKillingStory.View
             PlayAnimation("Enemy");
         }
 
-        public Vector2 GetPosition()// gets the enemy position!
+        public Vector2 GetPositionForEnemy()// gets the enemy position!
         {
             return position;
         }
@@ -70,7 +70,7 @@ namespace NewKillingStory.View
 
             direction *= enemySpeed;//Applies the speed speed
 
-            Vector2 playerPosition = player.GetPosition();
+            Vector2 playerPosition = player.GetPositionForPlayer();
             Vector2 targetVector = playerPosition - position;
             targetVector.Normalize();
 

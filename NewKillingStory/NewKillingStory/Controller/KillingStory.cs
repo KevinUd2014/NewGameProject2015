@@ -28,6 +28,9 @@ namespace NewKillingStory
         Texture2D gameOverScreen;
         Rectangle gameOverRectangle;
 
+        Texture2D FishishedScreen;
+        Rectangle FishishedRectangle;
+
         Rectangle pausedRectangle;
 
         SoundEffect backgroundMusic;
@@ -45,6 +48,7 @@ namespace NewKillingStory
             Pause,
             Instructions,
             GameOver,
+            Finished,
         }
 
 
@@ -110,6 +114,9 @@ namespace NewKillingStory
             pauseTexture = Content.Load<Texture2D>("PauseMenu");
             pausedRectangle = new Rectangle(0, 0, pauseTexture.Width, pauseTexture.Height);
 
+            FishishedScreen = Content.Load<Texture2D>("FinishedScreen");
+            FishishedRectangle = new Rectangle(0, 0, FishishedScreen.Width, FishishedScreen.Height);
+
             pauseInstructions = Content.Load<Texture2D>("PauseInstructions");
             pausedRectangleInstruction = new Rectangle(0, 0, pauseTexture.Width, pauseTexture.Height);
 
@@ -149,6 +156,9 @@ namespace NewKillingStory
         {
             MouseState mouse = Mouse.GetState();
             lastMouseState = mouse;
+
+            KeyboardState Keystate = Keyboard.GetState();
+
             switch (ScreenState)//creats a Switch with all the diffrent screens!
             {
                 case Gamestate.Menu:
@@ -228,13 +238,18 @@ namespace NewKillingStory
                     break;
                 case Gamestate.GameOver:
 
-                    KeyboardState Keystate = Keyboard.GetState();
-
                     if (Keystate.IsKeyDown(Keys.Enter))
                     {
                         ScreenState = Gamestate.Menu;
                     }
 
+                    break;
+                case Gamestate.Finished:
+                    
+                    if (Keystate.IsKeyDown(Keys.Enter))
+                    {
+                        ScreenState = Gamestate.Menu;
+                    }
                     break;
             }
             // TODO: Add your update logic here
@@ -277,6 +292,11 @@ namespace NewKillingStory
                     break;
                 case Gamestate.GameOver:
                     spriteBatch.Draw(gameOverScreen, gameOverRectangle, Color.White);
+
+                    spriteBatch.DrawString(spritefont, "Press Enter for main menu", new Vector2(200, 400), Color.White);
+                    break;
+                case Gamestate.Finished:
+                    spriteBatch.Draw(FishishedScreen, FishishedRectangle, Color.White);
 
                     spriteBatch.DrawString(spritefont, "Press Enter for main menu", new Vector2(200, 400), Color.White);
                     break;

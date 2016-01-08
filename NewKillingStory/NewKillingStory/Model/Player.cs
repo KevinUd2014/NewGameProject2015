@@ -56,7 +56,7 @@ namespace NewKillingStory.Model
             PlayAnimation("Down");
         }
 
-        public Vector2 GetPosition()
+        public Vector2 GetPositionForPlayer()
         {
             return position;
         }
@@ -82,7 +82,7 @@ namespace NewKillingStory.Model
                 if(sprite.GetType() == typeof(Enemy) && sprite.Alive)
                 {
                     Enemy enemy = sprite as Enemy;
-                    if((enemy.GetPosition() - position).Length() <=20)
+                    if((enemy.GetPositionForEnemy() - position).Length() <=20)
                     {
                         life -= enemy.giveDamage;
                     }
@@ -207,10 +207,9 @@ namespace NewKillingStory.Model
                     gameController.onSecondLevel = false;
                     tileChangeWorld = false;
                 }
-                if (tileChangeWorld && gameController.onThirdLevel == true)
+                if (tileChangeWorld && gameController.onThirdLevel == true && gameController.onFirstLevel == false && gameController.onSecondLevel == false)
                 {
-                    gameController.StartGame();
-                    gameController.Level1();
+                    gameController.Finished();
                     gameController.onThirdLevel = false;
                     gameController.onSecondLevel = false;
                     tileChangeWorld = false;
