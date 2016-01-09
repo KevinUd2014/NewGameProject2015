@@ -102,6 +102,7 @@ namespace NewKillingStory
             spritefont = Content.Load<SpriteFont>("NewSpriteFont");
             //Load all the textures here and sound as well!
             Texture2D enemyTexture = Content.Load<Texture2D>("Bat");
+            Texture2D bossTexture = Content.Load<Texture2D>("Fox");
             Texture2D startMenuBackground = Content.Load<Texture2D>("KillerStory");
             Texture2D playButton = Content.Load<Texture2D>("playButton");
             Texture2D instructionButton = Content.Load<Texture2D>("InstructionsButton");
@@ -133,7 +134,7 @@ namespace NewKillingStory
             
             //load all the classes and give them all the necessary parameters!
             menuController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, startMenuBackground, playButton, instructionButton);
-            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics, backgroundMusic, gameController, fireballSound, spritefont);
+            gameController.LoadContent(spriteBatch, Content, GraphicsDevice.Viewport, camera, enemyTexture, graphics, backgroundMusic, gameController, fireballSound, spritefont, bossTexture);
 
             menuController.setPosition(new Vector2(400, 400));// sätter positionen för knappen!
         }

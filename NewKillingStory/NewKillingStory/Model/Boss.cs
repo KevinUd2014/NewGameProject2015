@@ -1,14 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NewKillingStory.Model;
+using NewKillingStory.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NewKillingStory.View
+namespace NewKillingStory.Model
 {
-    class Enemy : AnimatedSprites
+    class Boss : AnimatedSprites
     {
         Map map;
 
@@ -19,19 +19,19 @@ namespace NewKillingStory.View
         Random random = new Random();// An instance of the Random object that will be used to calculate random coordinates to position the enemy.
 
         List<Rectangle> enemies = new List<Rectangle>();// lista med fiender
-        
+
         int enemyWidth, enemyHeight;// fiende info
 
         GraphicsDeviceManager graphics;
 
         Vector2 veclocity = Vector2.Zero;
         Player player;
-        
+
         const float enemyCreationTimer = 1.5f;//Hur länge en fiende ska vänta innan spawn igen
 
         private List<AnimatedSprites> animatedSprites;
 
-        public Enemy(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GraphicsDeviceManager graphics, Texture2D texture, Player _player) : base(position, camera)
+        public Boss(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GraphicsDeviceManager graphics, Texture2D texture, Player _player) : base(position, camera)
         {
             this.map = map;
             hitbox = new Vector4(15, 40, 49, 66); // bästa raden gällande karaktären!
@@ -50,7 +50,7 @@ namespace NewKillingStory.View
             enemyHeight = character.Height;
 
             FramesPerSecond = 14;
-            AddAnimation(4, 0, 0, "Enemy", 32, 30);
+            AddAnimation(3, 0, 0, "Enemy", 43, 43);
             //AddAnimation(4, 132, 0, "EnemyUp", 30, 30);
             //AddAnimation(4, 49, 0, "EnemyLeft", 30, 30);
             //AddAnimation(4, 95, 0, "EnemyRight", 30, 30);
@@ -81,13 +81,13 @@ namespace NewKillingStory.View
             Vector2 col = checkForCollision(position + targetVector * enemySpeed);
             targetVector = targetVector * (Vector2.One - col);
             position += targetVector * enemySpeed;
-            
+
             foreach (AnimatedSprites sprite in animatedSprites)
             {
                 if (sprite.GetType() == typeof(Flame) && sprite.Alive)
                 {
                     Flame flame = sprite as Flame;
-                    if ((flame.GetPosition() - position).Length() <= 20)
+                    if ((flame.GetPosition() - position).Length() <= 30)
                     {
                         flame.Alive = false;
                         life -= flame.giveDamage;
@@ -122,7 +122,7 @@ namespace NewKillingStory.View
                 return Vector2.Zero;
             }
             //bool outside = pos.X < 0 || pos.X + hitbox.Z > map.Width || pos.Y < 0 || pos.Y + hitbox.W > map.Height;
-            
+
         }
     }
 }

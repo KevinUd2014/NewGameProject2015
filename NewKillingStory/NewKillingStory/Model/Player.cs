@@ -87,6 +87,14 @@ namespace NewKillingStory.Model
                         life -= enemy.giveDamage;
                     }
                 }
+                if (sprite.GetType() == typeof(Boss) && sprite.Alive)
+                {
+                    Boss boss = sprite as Boss;
+                    if ((boss.GetPositionForEnemy() - position).Length() <= 30)
+                    {
+                        life -= boss.giveDamage;
+                    }
+                }
             }
 
             base.Update(gameTime);
@@ -161,7 +169,7 @@ namespace NewKillingStory.Model
         {
             if (gameTime.TotalGameTime.TotalSeconds - lastShot > fireRate)
             {
-                fireballSound.Play(1, (float)spreadRandom.NextDouble() * 2f - 1f, (float)spreadRandom.NextDouble() * 2f - 1f);
+                fireballSound.Play(0.03f, 0, 0);//(float)spreadRandom.NextDouble() * 2f - 1f, (float)spreadRandom.NextDouble() * 2f - 1f);
                 attack(bulletSpeed);
                 lastShot = (float)gameTime.TotalGameTime.TotalSeconds;
             }

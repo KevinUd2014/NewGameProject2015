@@ -17,9 +17,10 @@ namespace NewKillingStory.Controller
     {
         Map map;
         private Player player;
-        private Enemy enemy;
+        private Boss boss;
         GraphicsDeviceManager _graphics;
         Texture2D _enemyTexture;
+        Texture2D bossTexture;
         Camera camera;
         public List<AnimatedSprites> AnimatedSprites;
         Texture2D character;
@@ -54,13 +55,15 @@ namespace NewKillingStory.Controller
         public void LoadContent(SpriteBatch spriteBatch, ContentManager Content, Viewport viewport, 
             Camera camera, Texture2D enemyTexture, GraphicsDeviceManager graphics, 
             SoundEffect _backgroundMusic, GameController _gameController, 
-            SoundEffect _fireballSound, SpriteFont _spritefont)
+            SoundEffect _fireballSound, SpriteFont _spritefont, Texture2D _bossTexture)
         {
             _enemyTexture = enemyTexture;
             this.camera = camera;
             _graphics = graphics;
 
             spritefont = _spritefont;
+
+            bossTexture = _bossTexture;
 
             backgroundMusic = _backgroundMusic;
             fireballSound = _fireballSound;
@@ -86,23 +89,19 @@ namespace NewKillingStory.Controller
             AnimatedSprites.Add(player);
 
             player.LoadContent(character);
-
-            soundEffectInstance.Play();//
-
-            soundEffectInstance.Volume = 0.1f;
-            soundEffectInstance.Pan = -0.0f;
-            soundEffectInstance.Pitch = 0.0f;
-
+            
             Tiles.Content = _content;
         }
 
         public void GameOver()
         {
             killingStory.ScreenState = KillingStory.Gamestate.GameOver;
+            soundEffectInstance.Stop();
         }
         public void Finished()
         {
             killingStory.ScreenState = KillingStory.Gamestate.Finished;
+            soundEffectInstance.Stop();
         }
 
         public void Level1()
@@ -128,6 +127,11 @@ namespace NewKillingStory.Controller
             onThirdLevel = false;
             enemySpawnTimer = 1f;
             enemyCount = 10;
+            soundEffectInstance.Play();//
+
+            soundEffectInstance.Volume = 0.05f;
+            soundEffectInstance.Pan = -0.0f;
+            soundEffectInstance.Pitch = 0.0f;
         }
         public void Level2()
         {
@@ -174,8 +178,14 @@ namespace NewKillingStory.Controller
             onThirdLevel = true;
             onSecondLevel = false;
             onFirstLevel = false;
-            enemySpawnTimer = 1f;
+            enemySpawnTimer = 0.6f;
             enemyCount =40;
+
+            boss = new Boss(new Vector2(500, 500), map, AnimatedSprites, camera, _graphics, bossTexture, player);
+            AnimatedSprites.Add(boss);
+            boss.LoadContent(bossTexture);
+            boss.enemySpeed = 2f;
+            boss.life = 40;
         }
 
         public void Update(GameTime gameTime)
