@@ -14,7 +14,7 @@ namespace NewKillingStory.Model
 
         Vector4 hitbox;
         public float enemySpeed = 0.8f * 2f;
-        const int maxEnemies = 2;// Maximum amount of enemies to be shown at a time.
+        const int maxEnemies = 1;// Maximum amount of enemies to be shown at a time.
 
         Random random = new Random();// An instance of the Random object that will be used to calculate random coordinates to position the enemy.
 
@@ -51,10 +51,6 @@ namespace NewKillingStory.Model
 
             FramesPerSecond = 14;
             AddAnimation(3, 0, 0, "Enemy", 43, 43);
-            //AddAnimation(4, 132, 0, "EnemyUp", 30, 30);
-            //AddAnimation(4, 49, 0, "EnemyLeft", 30, 30);
-            //AddAnimation(4, 95, 0, "EnemyRight", 30, 30);
-            //AddAnimation(6, 0, 0, "Enemy", 32, 32);
             PlayAnimation("Enemy");
         }
         public void LoadContent(Texture2D character)

@@ -18,7 +18,6 @@ namespace NewKillingStory
             this.camera = camera;
         }
         protected Texture2D texture;
-        //protected Texture2D trees;
 
         private Rectangle rectangle;
         public Rectangle Rectangle

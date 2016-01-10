@@ -44,7 +44,7 @@ namespace NewKillingStory.Model
 
             fireballSound = _fireballSound;
 
-            hitbox = new Vector4(15, 40, 49, 66); // bästa raden gällande karaktären!
+            hitbox = new Vector4(15, 40, 49, 66); // bästa raden gällande karaktären!   (15, 40, 49, 66)
             gameController = _gameController;
             FramesPerSecond = 6;
 
@@ -215,7 +215,7 @@ namespace NewKillingStory.Model
                     gameController.onSecondLevel = false;
                     tileChangeWorld = false;
                 }
-                if (tileChangeWorld && gameController.onThirdLevel == true && gameController.onFirstLevel == false && gameController.onSecondLevel == false)
+                if (tileChangeWorld && gameController.onThirdLevel == true && gameController.onFirstLevel == false && gameController.onSecondLevel == false && gameController.boss.Alive == false)
                 {
                     gameController.Finished();
                     gameController.onThirdLevel = false;

@@ -17,7 +17,7 @@ namespace NewKillingStory.Controller
     {
         Map map;
         private Player player;
-        private Boss boss;
+        public Boss boss;
         GraphicsDeviceManager _graphics;
         Texture2D _enemyTexture;
         Texture2D bossTexture;
@@ -71,7 +71,7 @@ namespace NewKillingStory.Controller
             _content = Content;
             gameController = _gameController;
             character = Content.Load<Texture2D>("imp");
-            Flame.SetTexture(Content.Load<Texture2D>("flame_sprite"));
+            Flame.SetTexture(Content.Load<Texture2D>("Flames"));
             
             soundEffectInstance = backgroundMusic.CreateInstance();
 
@@ -96,42 +96,58 @@ namespace NewKillingStory.Controller
         public void GameOver()
         {
             killingStory.ScreenState = KillingStory.Gamestate.GameOver;
-            soundEffectInstance.Stop();
+            StopSound();
         }
         public void Finished()
         {
             killingStory.ScreenState = KillingStory.Gamestate.Finished;
+            StopSound();
+        }
+        public void StopSound()
+        {
             soundEffectInstance.Stop();
+        }
+        public void StartSound()
+        {
+            soundEffectInstance.Play();
+
+            soundEffectInstance.Volume = 0.05f;
+            soundEffectInstance.Pan = -0.0f;
+            soundEffectInstance.Pitch = 0.0f;
+        }
+        public void PauseSound()
+        {
+            soundEffectInstance.Pause();
+        }
+        public void ResumeSound()
+        {
+            soundEffectInstance.Resume();
         }
 
         public void Level1()
         {
             map.Generate(new int[,]{//denna sätter hur många tiles jag vill ha och vart jag vill ha dem på skärmen!
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                { 4,4,4,4,4,1,1,1,1,1,1,1,1,1},
-                { 4,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                { 4,1,4,4,4,1,1,1,1,1,4,4,1,1},
-                { 4,1,4,1,1,1,1,1,1,1,4,4,1,1},
-                { 4,1,4,1,1,1,1,1,1,1,1,1,1,1},
-                { 4,1,4,1,1,1,1,9,1,1,1,1,1,1},
+                { 1,4,4,4,4,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,4,4,4,1,1,1,1,1,4,4,1,1},
+                { 1,1,4,1,1,1,1,1,1,1,4,4,1,1},
+                { 1,1,4,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,4,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,6,6},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 9,1,1,1,1,1,1,1,1,1,1,1,1,1},
             }, tileSize);//med tileSize så menar jag 64 pixlar! int tilesize = 64;
             onFirstLevel = true;
             onSecondLevel = false;
             onThirdLevel = false;
             enemySpawnTimer = 1f;
             enemyCount = 10;
-            soundEffectInstance.Play();//
-
-            soundEffectInstance.Volume = 0.05f;
-            soundEffectInstance.Pan = -0.0f;
-            soundEffectInstance.Pitch = 0.0f;
+            StartSound();
         }
         public void Level2()
         {
@@ -143,13 +159,13 @@ namespace NewKillingStory.Controller
                 { 4,1,4,1,1,1,1,1,1,1,4,4,1,1},
                 { 4,1,4,1,1,4,1,1,1,1,1,1,1,1},
                 { 4,1,4,1,1,4,1,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,4,1,1,9,1,1,1,1,1},
+                { 1,1,1,1,1,4,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,4,1,1,1,1,1,1,6,6},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,4,4,4,4,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,4,1,1,1,1,1,1,1,1,1},
+                { 1,1,9,1,4,1,1,1,1,1,1,1,1,1},
             }, tileSize);//med tileSize så menar jag 64 pixlar! int tilesize = 64;
             onSecondLevel = true;
             onFirstLevel = false;
@@ -166,14 +182,14 @@ namespace NewKillingStory.Controller
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,1,6,1,9,1,1,1,1,1},
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,6,1,1,1,1,1,1,1},
-                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,6,1,1,1,1,1,6,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,6,9},
             }, tileSize);//med tileSize så menar jag 64 pixlar! int tilesize = 64;
             onThirdLevel = true;
             onSecondLevel = false;
@@ -184,7 +200,7 @@ namespace NewKillingStory.Controller
             boss = new Boss(new Vector2(500, 500), map, AnimatedSprites, camera, _graphics, bossTexture, player);
             AnimatedSprites.Add(boss);
             boss.LoadContent(bossTexture);
-            boss.enemySpeed = 2f;
+            boss.enemySpeed = 1.5f;
             boss.life = 40;
         }
 

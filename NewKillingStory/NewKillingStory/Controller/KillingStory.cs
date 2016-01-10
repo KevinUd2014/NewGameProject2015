@@ -33,6 +33,8 @@ namespace NewKillingStory
 
         Rectangle pausedRectangle;
 
+        SoundEffectInstance soundEffectInstance;
+
         SoundEffect backgroundMusic;
         SoundEffect fireballSound;
         SpriteFont spritefont;
@@ -108,6 +110,8 @@ namespace NewKillingStory
             Texture2D instructionButton = Content.Load<Texture2D>("InstructionsButton");
             //character = Content.Load<Texture2D>("Fox");
 
+            soundEffectInstance = backgroundMusic.CreateInstance();
+
             //pause saker
             gameOverScreen = Content.Load<Texture2D>("GameOverScreen");
             gameOverRectangle = new Rectangle(0, 0, gameOverScreen.Width, gameOverScreen.Height);
@@ -165,7 +169,7 @@ namespace NewKillingStory
                 case Gamestate.Menu:
                     IsMouseVisible = true;
                     menuController.Update((float)gameTime.ElapsedGameTime.TotalSeconds, mouse);
-                    
+
                     if (menuController.isClicked == true && lastMouseState.LeftButton == ButtonState.Released) 
                     {
                         ScreenState = Gamestate.Play;
@@ -191,6 +195,7 @@ namespace NewKillingStory
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                     {
                         ScreenState = Gamestate.Pause;
+                        gameController.PauseSound();
                     }
                     gameController.Update(gameTime);
 
@@ -201,6 +206,8 @@ namespace NewKillingStory
                     if (buttonPlay.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         ScreenState = Gamestate.Play;
+                        gameController.ResumeSound();
+                        buttonPlay.isClicked = false;
                     }
                     if (buttonQuit.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                         Exit();
@@ -212,6 +219,7 @@ namespace NewKillingStory
                     if(buttonInstruction.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         ScreenState = Gamestate.Instructions;
+                        buttonInstruction.isClicked = false;
                     }
                     buttonPlay.Update(mouse);
                     buttonQuit.Update(mouse);
@@ -222,7 +230,7 @@ namespace NewKillingStory
                 case Gamestate.Instructions:
 
                     IsMouseVisible = true;
-                    if (buttonBack.isClicked)
+                    if (buttonBack.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         if (menuController.isInstructionClicked == true)
                         {
