@@ -38,6 +38,7 @@ namespace NewKillingStory
         SoundEffect backgroundMusic;
         SoundEffect fireballSound;
         SpriteFont spritefont;
+        SpriteFont menuFont;
         Texture2D pauseInstructions;
         Rectangle pausedRectangleInstruction;
         PauseButton buttonPlay, buttonQuit, buttonMainMenu, buttonInstruction, buttonBack;
@@ -102,6 +103,7 @@ namespace NewKillingStory
 
             fireballSound = Content.Load<SoundEffect>("fireballShot");// när spelaren skjuter så kommer ljud!
             spritefont = Content.Load<SpriteFont>("NewSpriteFont");
+            menuFont = Content.Load<SpriteFont>("SpriteFontMenu/NewSpriteFont");
             //Load all the textures here and sound as well!
             Texture2D enemyTexture = Content.Load<Texture2D>("Bat");
             Texture2D bossTexture = Content.Load<Texture2D>("Fox");
@@ -151,6 +153,16 @@ namespace NewKillingStory
         {
             // TODO: Unload any non ContentManager content here
         }
+        public void Play()
+        {
+            ScreenState = Gamestate.Play;
+
+            gameController.StartGame();
+            gameController.Level1();
+
+            IsMouseVisible = true;
+            menuController.isClicked = false;  // har problem med vart jag ska sätta dessa för att dom ska bli bra menyerna buggar lite!
+        }
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -172,19 +184,18 @@ namespace NewKillingStory
 
                     if (menuController.isClicked == true && lastMouseState.LeftButton == ButtonState.Released) 
                     {
-                        ScreenState = Gamestate.Play;
-
-                        gameController.StartGame();
-                        gameController.Level1();
-
-                        IsMouseVisible = true;
-                        menuController.isClicked = false;  // har problem med vart jag ska sätta dessa för att dom ska bli bra menyerna buggar lite!
+                        Play();
+                    }
+                    if (Keystate.IsKeyDown(Keys.P))
+                    {
+                        Play();
                     }
                     if (menuController.isInstructionClicked == true && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         ScreenState = Gamestate.Instructions;
                         IsMouseVisible = true;
                         menuController.isInstructionClicked = true; // denna finns i instruction gamestate!
+                        buttonBack.isClicked = false;
                     }
                     break;
                 case Gamestate.Play:
@@ -220,6 +231,7 @@ namespace NewKillingStory
                     {
                         ScreenState = Gamestate.Instructions;
                         buttonInstruction.isClicked = false;
+                        buttonBack.isClicked = false;
                     }
                     buttonPlay.Update(mouse);
                     buttonQuit.Update(mouse);
@@ -236,6 +248,7 @@ namespace NewKillingStory
                         {
                             ScreenState = Gamestate.Menu;
                             menuController.isInstructionClicked = false;
+                            buttonBack.isClicked = false;
                         }
                         else
                         {
@@ -279,9 +292,11 @@ namespace NewKillingStory
             {
                 case Gamestate.Menu:
                     menuController.Draw(spriteBatch, (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    spriteBatch.DrawString(menuFont, "Press 'P' to play", new Vector2(350, 600), Color.White);
                     break;
                 case Gamestate.Play:
                     gameController.Draw(spriteBatch);
+                    spriteBatch.DrawString(menuFont, "Press 'ESC' to pause", new Vector2(10, 10), Color.Black);
                     //snow.Draw(spriteBatch);//snöpartiklarna!
                     rain.Draw(spriteBatch);//regnpartiklarna!
                     break;

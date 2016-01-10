@@ -140,21 +140,18 @@ namespace NewKillingStory.Model
                 PlayAnimation("Up");
                 currentDirection = myDirection.up;
                 shoot(gameTime, new Vector2(0, -5));
-
             }
             if (keyState.IsKeyDown(Keys.Down))
             {
                 PlayAnimation("Down");
                 currentDirection = myDirection.down;
                 shoot(gameTime, new Vector2(0, 5));
-
             }
             if (keyState.IsKeyDown(Keys.Right))
             {
                 PlayAnimation("Right");
                 currentDirection = myDirection.right;
                 shoot(gameTime, new Vector2(5, 0));
-
             }
             if (keyState.IsKeyDown(Keys.Left))
             {
