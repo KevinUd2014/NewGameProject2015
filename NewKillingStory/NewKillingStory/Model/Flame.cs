@@ -15,6 +15,7 @@ namespace NewKillingStory.Model
         private float age;
         private float range;
         private Map map;
+        private Vector2 offset;
 
         public Flame(Vector2 position, Map map, Vector2 velocity, Camera camera, float range = 2f) : base(position, camera)
         {
@@ -23,6 +24,8 @@ namespace NewKillingStory.Model
             this.range = range;
 
             character = texture;
+
+            offset = new Vector2(62 / 2, 76 / 2);
 
             FramesPerSecond = 9;
             AddAnimation(4, 0, 0, "fire", 62, 76);
@@ -39,10 +42,14 @@ namespace NewKillingStory.Model
                 Alive = false;
             }
 
-            int x = (int)(position.X / map.Width * map.tilemap.GetLength(1));
-            int y = (int)(position.Y / map.Height * map.tilemap.GetLength(0));
+            int x = (int)((position.X + offset.X) / map.Width * map.tilemap.GetLength(1));
+            int y = (int)((position.Y + offset.Y) / map.Height * map.tilemap.GetLength(0));
 
-            if (x >= 0 && y >= 0 && x < map.tilemap.GetLength(1) && y < map.tilemap.GetLength(0) && map.tilemap[y,x] % 2 == 0)
+            if (x >= 0
+                && y >= 0
+                && x < map.tilemap.GetLength(1)
+                && y < map.tilemap.GetLength(0)
+                && map.tilemap[y,x] % 2 == 0)
             {
                 Alive = false;
             }

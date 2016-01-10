@@ -20,10 +20,11 @@ namespace NewKillingStory.Model
         Map map;
 
         Vector4 hitbox;
+        private Vector2 offset;
 
         private float lastShot = 0;
         private float fireRate = 0.3f;
-        private float spread = 45f;
+        private float spread = 5f;
         private Random spreadRandom;
         Camera camera;
         private List<AnimatedSprites> animatedSprites;
@@ -35,8 +36,8 @@ namespace NewKillingStory.Model
         public Player(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GameController _gameController, SoundEffect _fireballSound) : base(position, camera)//this position is handled through the base class
         {
             spreadRandom = new Random();
-            this.life = 5;
-            this.giveDamage = 1;
+            life = 5;
+            giveDamage = 1;
             this.position = position;
             this.camera = camera;
             this.map = map;
@@ -45,6 +46,7 @@ namespace NewKillingStory.Model
             fireballSound = _fireballSound;
 
             hitbox = new Vector4(15, 40, 49, 66); // bästa raden gällande karaktären!   (15, 40, 49, 66)
+            offset = new Vector2(hitbox.X + hitbox.Z, hitbox.Y + hitbox.W) / 2f;
             gameController = _gameController;
             FramesPerSecond = 6;
 
@@ -56,9 +58,9 @@ namespace NewKillingStory.Model
             PlayAnimation("Down");
         }
 
-        public Vector2 GetPositionForPlayer()
+        public Vector2 GetCenterPositionForPlayer()
         {
-            return position;
+            return position + offset;
         }
         // Loads content specific to the player class
         public void LoadContent(Texture2D character)
@@ -79,20 +81,12 @@ namespace NewKillingStory.Model
             
             foreach (AnimatedSprites sprite in animatedSprites)
             {
-                if(sprite.GetType() == typeof(Enemy) && sprite.Alive)
+                if(sprite is Enemy && sprite.Alive)
                 {
                     Enemy enemy = sprite as Enemy;
-                    if((enemy.GetPositionForEnemy() - position).Length() <=20)
+                    if((enemy.GetCenterPositionForEnemy() - GetCenterPositionForPlayer()).Length() <= 22 + enemy.Radius)
                     {
                         life -= enemy.giveDamage;
-                    }
-                }
-                if (sprite.GetType() == typeof(Boss) && sprite.Alive)
-                {
-                    Boss boss = sprite as Boss;
-                    if ((boss.GetPositionForEnemy() - position).Length() <= 30)
-                    {
-                        life -= boss.giveDamage;
                     }
                 }
             }
@@ -174,8 +168,8 @@ namespace NewKillingStory.Model
 
         private void attack(Vector2 V)
         {
-            //float s = (spread * (float)spreadRandom.NextDouble() - spread/2f) * (float)Math.PI / 180f;
-            Flame flame = new Flame(position,map, V, camera);
+            float s = (spread * (float)spreadRandom.NextDouble() - spread/2f) * (float)Math.PI / 180f;
+            Flame flame = new Flame(position,map, Vector2.Transform(V,Matrix.CreateRotationZ(s)), camera);
             flame.giveDamage = giveDamage;
             animatedSprites.Add(flame);
         }
@@ -212,7 +206,7 @@ namespace NewKillingStory.Model
                     gameController.onSecondLevel = false;
                     tileChangeWorld = false;
                 }
-                if (tileChangeWorld && gameController.onThirdLevel == true && gameController.onFirstLevel == false && gameController.onSecondLevel == false && gameController.boss.Alive == false)
+                if (tileChangeWorld && gameController.onThirdLevel == true && gameController.onFirstLevel == false && gameController.onSecondLevel == false)
                 {
                     gameController.Finished();
                     gameController.onThirdLevel = false;

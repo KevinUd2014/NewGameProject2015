@@ -197,11 +197,7 @@ namespace NewKillingStory.Controller
             enemySpawnTimer = 0.6f;
             enemyCount =40;
 
-            boss = new Boss(new Vector2(500, 500), map, AnimatedSprites, camera, _graphics, bossTexture, player);
-            AnimatedSprites.Add(boss);
-            boss.LoadContent(bossTexture);
-            boss.enemySpeed = 1.5f;
-            boss.life = 40;
+            AnimatedSprites.Add(new Boss(new Vector2(500, 500), map, AnimatedSprites, camera, _graphics, bossTexture, player));
         }
 
         public void Update(GameTime gameTime)

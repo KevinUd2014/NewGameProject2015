@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NewKillingStory.Model;
+using NewKillingStory.View;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace NewKillingStory.View
+namespace NewKillingStory.Model
 {
     class Enemy : AnimatedSprites
     {
@@ -26,45 +24,45 @@ namespace NewKillingStory.View
 
         Vector2 veclocity = Vector2.Zero;
         Player player;
+        protected Vector2 offset;
+        public float Radius { get; protected set; }
         
         const float enemyCreationTimer = 1.5f;//Hur länge en fiende ska vänta innan spawn igen
 
-        private List<AnimatedSprites> animatedSprites;
+        protected List<AnimatedSprites> animatedSprites;
 
         public Enemy(Vector2 position, Map map, List<AnimatedSprites> animatedSprites, Camera camera, GraphicsDeviceManager graphics, Texture2D texture, Player _player) : base(position, camera)
         {
             this.map = map;
             hitbox = new Vector4(15, 40, 49, 66); // bästa raden gällande karaktären!
             this.animatedSprites = animatedSprites;
-            this.life = 2;
-            this.giveDamage = 5;
+            life = 2;
+            giveDamage = 5;
             //velocity = new Vector2(2,2);//speed later
             this.position = position;
             this.graphics = graphics;
-
+            Radius = 13f;
             character = texture;
 
             player = _player;
+            offset = new Vector2(hitbox.X + hitbox.Z, hitbox.Y + hitbox.W) / 2f;
 
             enemyWidth = character.Width;
             enemyHeight = character.Height;
 
+            LoadContent();
+            
+        }
+        public virtual void LoadContent()
+        {
             FramesPerSecond = 14;
             AddAnimation(4, 0, 0, "Enemy", 32, 30);
-            //AddAnimation(4, 132, 0, "EnemyUp", 30, 30);
-            //AddAnimation(4, 49, 0, "EnemyLeft", 30, 30);
-            //AddAnimation(4, 95, 0, "EnemyRight", 30, 30);
-            //AddAnimation(6, 0, 0, "Enemy", 32, 32);
             PlayAnimation("Enemy");
         }
-        public void LoadContent(Texture2D character)
-        {
-            this.character = character;//laddar in charactern!
-        }
 
-        public Vector2 GetPositionForEnemy()// gets the enemy position!
+        public Vector2 GetCenterPositionForEnemy()// gets the enemy position!
         {
-            return position;
+            return position + offset;
         }
         public override void Update(GameTime gameTime)
         {
@@ -74,8 +72,8 @@ namespace NewKillingStory.View
 
             direction *= enemySpeed;//Applies the speed speed
 
-            Vector2 playerPosition = player.GetPositionForPlayer();
-            Vector2 targetVector = playerPosition - position;
+            Vector2 playerPosition = player.GetCenterPositionForPlayer();
+            Vector2 targetVector = playerPosition - GetCenterPositionForEnemy();
             targetVector.Normalize();
 
             Vector2 col = checkForCollision(position + targetVector * enemySpeed);
@@ -117,7 +115,7 @@ namespace NewKillingStory.View
 
                 return new Vector2(x, y);
             }
-            catch (IndexOutOfRangeException e)
+            catch
             {
                 return Vector2.Zero;
             }
