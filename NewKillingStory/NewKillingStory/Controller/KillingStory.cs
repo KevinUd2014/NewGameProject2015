@@ -124,7 +124,7 @@ namespace NewKillingStory
             FishishedScreen = Content.Load<Texture2D>("FinishedScreen");
             FishishedRectangle = new Rectangle(0, 0, FishishedScreen.Width, FishishedScreen.Height);
 
-            pauseInstructions = Content.Load<Texture2D>("PauseInstructions");
+            pauseInstructions = Content.Load<Texture2D>("Instructions");
             pausedRectangleInstruction = new Rectangle(0, 0, pauseTexture.Width, pauseTexture.Height);
 
             buttonPlay = new PauseButton();
