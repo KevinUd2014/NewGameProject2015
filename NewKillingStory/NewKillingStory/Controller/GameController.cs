@@ -38,6 +38,7 @@ namespace NewKillingStory.Controller
         public bool onFirstLevel;
         public bool onSecondLevel;
         public bool onThirdLevel;
+        public bool onFourthLevel;
 
         public int enemyCount = 10;
         private float enemySpawnTimer = .5f;
@@ -78,7 +79,8 @@ namespace NewKillingStory.Controller
             onFirstLevel = false;
             onSecondLevel = false;
             onThirdLevel = false;
-            
+            onFourthLevel = false;
+
         }
         public void StartGame()
         {
@@ -145,6 +147,7 @@ namespace NewKillingStory.Controller
             onFirstLevel = true;
             onSecondLevel = false;
             onThirdLevel = false;
+            onFourthLevel = false;
             enemySpawnTimer = 1f;
             enemyCount = 10;
             StartSound();
@@ -170,6 +173,7 @@ namespace NewKillingStory.Controller
             onSecondLevel = true;
             onFirstLevel = false;
             onThirdLevel = false;
+            onFourthLevel = false;
             enemySpawnTimer = 1f;
             enemyCount = 20;
         }
@@ -194,10 +198,41 @@ namespace NewKillingStory.Controller
             onThirdLevel = true;
             onSecondLevel = false;
             onFirstLevel = false;
+            onFourthLevel = false;
             enemySpawnTimer = 0.6f;
             enemyCount =40;
 
             AnimatedSprites.Add(new Boss(new Vector2(500, 500), map, AnimatedSprites, camera, _graphics, bossTexture, player));
+        }
+        public void Level4()
+        {
+            map.Generate(new int[,]{//denna sätter hur många tiles jag vill ha och vart jag vill ha dem på skärmen!
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                { 1,1,9,1,1,1,1,1,1,1,1,1,1,1},
+            }, tileSize);//med tileSize så menar jag 64 pixlar! int tilesize = 64;
+            onSecondLevel = false;
+            onFirstLevel = false;
+            onThirdLevel = false;
+            onFourthLevel = true;
+
+            enemySpawnTimer = 1f;
+            enemyCount = 30;
+            AnimatedSprites.Add(new Boss(new Vector2(500, 500), map, AnimatedSprites, camera, _graphics, bossTexture, player));
+            AnimatedSprites.Add(new Boss(new Vector2(100, 500), map, AnimatedSprites, camera, _graphics, bossTexture, player));
+            AnimatedSprites.Add(new Boss(new Vector2(100, 200), map, AnimatedSprites, camera, _graphics, bossTexture, player));
+            AnimatedSprites.Add(new Boss(new Vector2(500, 200), map, AnimatedSprites, camera, _graphics, bossTexture, player));
         }
 
         public void Update(GameTime gameTime)
@@ -259,6 +294,10 @@ namespace NewKillingStory.Controller
             {
                 spriteBatch.DrawString(spritefont, "Third Level", new Vector2(10, 790), Color.Black);
                 spriteBatch.DrawString(spritefont, "Boss Fight", new Vector2(600, 10), Color.Red);
+            }
+            if (onFourthLevel == true)
+            {
+                spriteBatch.DrawString(spritefont, "Fourth Level", new Vector2(10, 790), Color.Black);
             }
 
 

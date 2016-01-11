@@ -199,17 +199,26 @@ namespace NewKillingStory.Model
                     gameController.onThirdLevel = false;
                     tileChangeWorld = false;
                 }
-                if (tileChangeWorld && gameController.onSecondLevel == true && gameController.onFirstLevel == false && gameController.onThirdLevel == false)
+                if (tileChangeWorld && gameController.onSecondLevel == true && gameController.onFirstLevel == false && gameController.onThirdLevel == false && gameController.onFourthLevel == false)
                 {
                     gameController.StartGame();
                     gameController.Level3();
                     gameController.onSecondLevel = false;
                     tileChangeWorld = false;
                 }
-                if (tileChangeWorld && gameController.onThirdLevel == true && gameController.onFirstLevel == false && gameController.onSecondLevel == false)
+                if (tileChangeWorld && gameController.onThirdLevel == true && gameController.onFirstLevel == false && gameController.onSecondLevel == false && gameController.onFourthLevel == false)
+                {
+                    gameController.StartGame();
+                    gameController.Level4();
+                    gameController.onThirdLevel = false;
+                    gameController.onSecondLevel = false;
+                    tileChangeWorld = false;
+                }
+                if (tileChangeWorld && gameController.onFourthLevel == true && gameController.onThirdLevel == false && gameController.onFirstLevel == false && gameController.onSecondLevel == false)
                 {
                     gameController.Finished();
                     gameController.onThirdLevel = false;
+                    gameController.onFourthLevel = false;
                     gameController.onSecondLevel = false;
                     tileChangeWorld = false;
                 }
